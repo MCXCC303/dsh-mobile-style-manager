@@ -34,6 +34,7 @@ html[data-dsh-msm][data-dsh-msm-compact-header] header[class*="_header"] [class*
   font-size: 13px !important;
 }
 
+html[data-dsh-msm][data-dsh-msm-hide-subtitles] [role="dialog"] [class*="_intro"],
 html[data-dsh-msm][data-dsh-msm-hide-subtitles] [role="dialog"] [class*="desc" i],
 html[data-dsh-msm][data-dsh-msm-hide-subtitles] [role="dialog"] [class*="advancedHint"] {
   display: none !important;
