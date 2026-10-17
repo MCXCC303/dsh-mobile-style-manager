@@ -1,0 +1,24 @@
+# tooling
+node_modules/
+*.log
+.DS_Store
+
+# lock
+package-lock.json
+
+# build output
+dist/
+
+# local-only documents
+docs/
+
+# npm auth indirection
+.npmrc
+
+# CI scratch
+boot.log
+boot.pid
+composed.yml
+
+# researches
+.research/
