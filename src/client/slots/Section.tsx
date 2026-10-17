@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from "react"
 import { ATTRS } from "../../shared/identity"
-import type { Gate, NavMode, SettingsV1, SidebarWidth } from "../../shared/state"
+import { DRAWER_WIDTH_MAX, DRAWER_WIDTH_MIN, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
 import type { Controller } from "../core/controller"
 import type { HealthReport } from "../core/health"
 
@@ -193,6 +193,24 @@ export function Section({ controller }: SectionProps): ReactElement {
               : <option value="topbar" disabled>Top bar (unavailable)</option>}
           </select>
         </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Rail width</span>
+            <span className="msm-hint">Width of the left rail, and the top bar height.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Rail width"
+              type="range"
+              min={NAV_SIZE_MIN}
+              max={NAV_SIZE_MAX}
+              step={1}
+              value={state.navSize}
+              onChange={(event) => update({ navSize: Number(event.currentTarget.value) })}
+            />
+            <output>{state.navSize}px</output>
+          </div>
+        </div>
         {state.navMode !== nav.effective ? (
           <div className="msm-kv">
             <span>Effective mode</span>
@@ -211,18 +229,21 @@ export function Section({ controller }: SectionProps): ReactElement {
         <h3 className="msm-card-title" id="msm-sidebar-title">Sidebar</h3>
         <div className="msm-row">
           <div className="msm-copy">
-            <span className="msm-label">Sidebar width</span>
-            <span className="msm-hint">Width of the drawer on mobile.</span>
+            <span className="msm-label">Drawer width</span>
+            <span className="msm-hint">Width of the drawer overlay on mobile.</span>
           </div>
-          <select
-            aria-label="Sidebar width"
-            className="msm-select"
-            value={state.sidebarWidth}
-            onChange={(event) => update({ sidebarWidth: event.currentTarget.value as SidebarWidth })}
-          >
-            <option value="full">Full width</option>
-            <option value="86vw">86% width</option>
-          </select>
+          <div className="msm-range">
+            <input
+              aria-label="Drawer width"
+              type="range"
+              min={DRAWER_WIDTH_MIN}
+              max={DRAWER_WIDTH_MAX}
+              step={1}
+              value={state.drawerWidth}
+              onChange={(event) => update({ drawerWidth: Number(event.currentTarget.value) })}
+            />
+            <output>{state.drawerWidth}%</output>
+          </div>
         </div>
       </section>
 

@@ -11,7 +11,7 @@ export const STYLE_IDS = {
 export const ATTRS = {
   active: "data-dsh-msm",
   nav: "data-dsh-msm-nav",
-  sidebar: "data-dsh-msm-sidebar",
+  drawerScrim: "data-dsh-msm-drawer-scrim",
   compactHeader: "data-dsh-msm-compact-header",
   hideSubtitles: "data-dsh-msm-hide-subtitles",
   compactButtons: "data-dsh-msm-compact-buttons",
