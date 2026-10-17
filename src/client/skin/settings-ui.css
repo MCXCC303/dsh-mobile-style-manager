@@ -278,3 +278,24 @@ html[data-dsh-msm][data-dsh-msm-dense-settings] [role="dialog"]:is(:has([data-sl
 html[data-dsh-msm][data-dsh-msm-hide-own-subtitles] :is(.msm-subtitle, .msm-hint) {
   display: none !important;
 }
+
+@media (max-width: 520px) {
+  html[data-dsh-msm][data-dsh-msm-hide-own-subtitles] .msm-row {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+    min-height: 0 !important;
+    padding: 4px 0 !important;
+  }
+  html[data-dsh-msm][data-dsh-msm-hide-own-subtitles] .msm-row .msm-copy {
+    width: auto !important;
+    flex: 1 1 auto !important;
+  }
+  html[data-dsh-msm][data-dsh-msm-hide-own-subtitles] .msm-row :is(.msm-range, .msm-select, .msm-switch) {
+    align-self: center !important;
+    flex: 0 0 auto !important;
+  }
+  html[data-dsh-msm][data-dsh-msm-hide-own-subtitles] .msm-range input[type="range"] {
+    width: 120px !important;
+  }
+}
