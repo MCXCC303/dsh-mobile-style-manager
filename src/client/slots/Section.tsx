@@ -291,6 +291,27 @@ export function Section({ controller }: SectionProps): ReactElement {
         </div>
       </section>
 
+      <section className="msm-card" aria-labelledby="msm-text-title">
+        <h3 className="msm-card-title" id="msm-text-title">Text</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Body font size</span>
+            <span className="msm-hint">Font size of message text in a session.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Body font size"
+              type="range"
+              min={12}
+              max={20}
+              step={1}
+              value={state.bodyFontSize}
+              onChange={(event) => update({ bodyFontSize: Number(event.currentTarget.value) })}
+            />
+            <output>{state.bodyFontSize}px</output>
+          </div>
+        </div>
+      </section>
       <section className="msm-card" aria-labelledby="msm-compat-title">
         <h3 className="msm-card-title" id="msm-compat-title">Compatibility</h3>
         <div className="msm-kv">

@@ -27,6 +27,7 @@ export interface SettingsV1 {
   denseSettings: boolean
   hideOwnSubtitles: boolean
   hidePluginPageSubtitles: boolean
+  bodyFontSize: number
   safeArea: boolean
   customCss: string
   rawCss: boolean
@@ -56,6 +57,7 @@ export function createDefaultSettings(): SettingsV1 {
     denseSettings: false,
     hideOwnSubtitles: false,
     hidePluginPageSubtitles: false,
+    bodyFontSize: 14,
     safeArea: true,
     customCss: "",
     rawCss: false,
@@ -89,6 +91,11 @@ function readEnum<T extends string>(value: unknown, allowed: readonly T[], fallb
 function readBreakpoint(value: unknown): number {
   if (typeof value !== "number" || !Number.isFinite(value)) return 768
   return Math.min(1024, Math.max(480, Math.round(value)))
+}
+
+function readFontSize(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) return 14
+  return Math.min(20, Math.max(12, Math.round(value)))
 }
 
 function readPreview(value: unknown, fallback: PreviewSettings): PreviewSettings {
@@ -125,6 +132,7 @@ export function normalizeState(value: unknown): SettingsV1 {
     denseSettings: readBoolean(value.denseSettings, defaults.denseSettings),
     hideOwnSubtitles: readBoolean(value.hideOwnSubtitles, defaults.hideOwnSubtitles),
     hidePluginPageSubtitles: readBoolean(value.hidePluginPageSubtitles, defaults.hidePluginPageSubtitles),
+    bodyFontSize: readFontSize(value.bodyFontSize),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),
     customCss: readString(value.customCss, defaults.customCss),
     rawCss: readBoolean(value.rawCss, defaults.rawCss),

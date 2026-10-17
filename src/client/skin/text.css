@@ -1,0 +1,3 @@
+html[data-dsh-msm] [class*="_markdown"] {
+  font-size: var(--msm-body-font-size, 14px) !important;
+}

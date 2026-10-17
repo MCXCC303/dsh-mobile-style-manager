@@ -77,6 +77,7 @@ export function createStyleLayer(store: Store): StyleLayer {
 
   const render = (state: SettingsV1): void => {
     syncRoot(state)
+    root.style.setProperty("--msm-body-font-size", state.bodyFontSize + "px")
     setMedia(skin, state.enabled && state.useBuiltinSkin
       ? gateQuery(state.breakpoint, state.gate)
       : NEVER)
@@ -115,6 +116,7 @@ export function createStyleLayer(store: Store): StyleLayer {
       unsubscribe()
       media.removeEventListener("change", onMediaChange)
       coarse.removeEventListener("change", onMediaChange)
+      root.style.removeProperty("--msm-body-font-size")
       for (const name of ROOT_ATTRS) root.removeAttribute(name)
       skin.remove()
       settings.remove()
