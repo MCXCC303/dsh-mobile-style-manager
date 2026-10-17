@@ -28,3 +28,9 @@ composed.yml
 
 # worktree
 .worktrees/
+
+# IDE
+.idea/
+.vscode/
+.claude/
+.deepseek/
