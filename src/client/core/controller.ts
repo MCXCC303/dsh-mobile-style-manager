@@ -30,7 +30,7 @@ export interface Controller {
   setSidebarOpen(open: boolean): void
   isSidebarOpen(): boolean
   toggleSidebar(): void
-  setHeaderMenuAvailable(value: boolean): void
+  setTopbarAvailable(value: boolean): void
   setDrawerAvailable(value: boolean): void
   dispose(): void
 }
@@ -74,7 +74,7 @@ export function createController(ctx: ClientContext): Controller {
   const navListeners = new Set<() => void>()
   const sidebarListeners = new Set<() => void>()
   let disposed = false
-  let headerMenuAvailable = false
+  let topbarSlotAvailable = false
   let drawerAvailable = false
   let sidebarOpen = false
 
@@ -82,7 +82,7 @@ export function createController(ctx: ClientContext): Controller {
   let media = window.matchMedia(mobileQuery(initial.breakpoint))
   const coarse = window.matchMedia(coarseQuery)
   let lastBreakpoint = initial.breakpoint
-  let navState = buildNavState(initial, media, coarse, headerMenuAvailable, drawerAvailable)
+  let navState = buildNavState(initial, media, coarse, topbarSlotAvailable, drawerAvailable)
 
   const notifyNav = (): void => {
     for (const listener of [...navListeners]) listener()
@@ -94,7 +94,7 @@ export function createController(ctx: ClientContext): Controller {
 
   const syncNav = (): void => {
     const state = store.get()
-    const next = buildNavState(state, media, coarse, headerMenuAvailable, drawerAvailable)
+    const next = buildNavState(state, media, coarse, topbarSlotAvailable, drawerAvailable)
     setValue(ATTRS.nav, next.active ? next.effective : null)
     setValue(ATTRS.sidebar, next.active ? state.sidebarWidth : null)
     if (!sameNav(navState, next)) {
@@ -121,9 +121,9 @@ export function createController(ctx: ClientContext): Controller {
   coarse.addEventListener("change", onMediaChange)
   syncNav()
 
-  const setHeaderMenuAvailable = (value: boolean): void => {
-    if (headerMenuAvailable === value) return
-    headerMenuAvailable = value
+  const setTopbarAvailable = (value: boolean): void => {
+    if (topbarSlotAvailable === value) return
+    topbarSlotAvailable = value
     syncNav()
   }
 
@@ -193,7 +193,7 @@ export function createController(ctx: ClientContext): Controller {
     setSidebarOpen,
     isSidebarOpen: () => readSidebarOpen(),
     toggleSidebar: () => toggleHostSidebar(ctx),
-    setHeaderMenuAvailable,
+    setTopbarAvailable,
     setDrawerAvailable,
     dispose,
   }

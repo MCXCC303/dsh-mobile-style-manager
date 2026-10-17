@@ -7,23 +7,14 @@ import type { MsmFeature } from "./registry"
 export const navigationFeature: MsmFeature = {
   name: "navigation",
   install(controller, ctx) {
-    const HeaderMenu = () => createElement(MenuButton, { controller, placement: "header" })
-    const OverlayMenu = () => createElement(MenuButton, { controller, placement: "overlay" })
+    const OverlayMenu = () => createElement(MenuButton, { controller })
     const cleanups: (() => void)[] = []
 
+    // The slot is the version probe: 0.1.7+ declares it, and topbar reuses the
+    // host sidebar rail instead of rendering a second header control.
     cleanups.push(ctx.slots.inject("conversation.header.leading", () => {
-      let dispose: (() => void) | null = null
-      try {
-        dispose = ctx.slots.register({ name: "conversation.header.leading" }, HeaderMenu)
-        controller.setHeaderMenuAvailable(true)
-      } catch (error) {
-        controller.reportError("navigation:header", error)
-        return () => {}
-      }
-      return () => {
-        dispose?.()
-        controller.setHeaderMenuAvailable(false)
-      }
+      controller.setTopbarAvailable(true)
+      return () => controller.setTopbarAvailable(false)
     }))
 
     cleanups.push(ctx.slots.inject("shell.overlay", () => {

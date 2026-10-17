@@ -181,7 +181,9 @@ export function Section({ controller }: SectionProps): ReactElement {
           >
             <option value="rail">Rail</option>
             <option value="drawer" disabled={!nav.drawerAvailable}>Drawer</option>
-            <option value="topbar" disabled={!nav.topbarAvailable}>Top bar</option>
+            {nav.topbarAvailable
+              ? <option value="topbar">Top bar</option>
+              : <option value="topbar" disabled>Top bar (unavailable)</option>}
           </select>
         </div>
         {state.navMode !== nav.effective ? (

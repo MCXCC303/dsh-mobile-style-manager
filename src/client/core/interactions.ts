@@ -1,5 +1,5 @@
 import type { Controller } from "./controller"
-import { findFrame, findSidebar, isSidebarOpen } from "./layout-bridge"
+import { findFrame, isSidebarOpen } from "./layout-bridge"
 
 const SIDEBAR_ACTION_SELECTOR = [
   '[data-row-key^="session:"]',
@@ -36,18 +36,15 @@ export function createInteractions(controller: Controller): Interactions {
 
   const focusMenu = (): void => {
     requestAnimationFrame(() => {
-      document.querySelector<HTMLElement>("[data-dsh-msm-menu]")?.focus()
+      const menu = document.querySelector<HTMLElement>("[data-dsh-msm-menu]")
+        ?? document.querySelector<HTMLElement>('button[class*="_toggle"]')
+      menu?.focus()
     })
   }
 
   const focusSidebar = (): void => {
     requestAnimationFrame(() => {
-      const sidebar = findSidebar()
-      const toggle = sidebar?.querySelector<HTMLElement>('button[class*="_toggle"]')
-      const fallback = sidebar?.querySelector<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      )
-      ;(toggle ?? fallback)?.focus()
+      document.querySelector<HTMLElement>('button[class*="_toggle"]')?.focus()
     })
   }
 
