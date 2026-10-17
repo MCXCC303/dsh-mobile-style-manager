@@ -1,0 +1,7 @@
+html[data-dsh-msm][data-dsh-msm-hide-preset-desc] [role="menu"] [class*="_itemDesc"] {
+  display: none !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-hide-plugin-subtitles] [data-plugin-panel] [class*="_pageIntro"] {
+  display: none !important;
+}
