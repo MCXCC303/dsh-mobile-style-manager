@@ -10,8 +10,7 @@
     "./package.json": "./package.json"
   },
   "engines": {
-    "node": ">=20",
-    "dsh": ">=0.1.0-rc.2 <0.3.0"
+    "node": ">=20"
   },
   "dsh": {
     "manifestVersion": 1,
