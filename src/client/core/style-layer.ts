@@ -13,6 +13,10 @@ const ROOT_ATTRS = [
   ATTRS.compactHeader,
   ATTRS.hideSubtitles,
   ATTRS.compactButtons,
+  ATTRS.hidePresetDescriptions,
+  ATTRS.denseSettings,
+  ATTRS.hideOwnSubtitles,
+  ATTRS.hidePluginPageSubtitles,
   ATTRS.safeArea,
   ATTRS.settingsFullscreen,
 ] as const
@@ -63,6 +67,10 @@ export function createStyleLayer(store: Store): StyleLayer {
     setFlag(root, ATTRS.compactHeader, state.enabled && mobile && state.compactHeader)
     setFlag(root, ATTRS.hideSubtitles, state.enabled && mobile && state.hideSubtitles)
     setFlag(root, ATTRS.compactButtons, state.enabled && mobile && state.compactButtons)
+    setFlag(root, ATTRS.hidePresetDescriptions, state.enabled && mobile && state.hidePresetDescriptions)
+    setFlag(root, ATTRS.denseSettings, state.enabled && mobile && state.denseSettings)
+    setFlag(root, ATTRS.hideOwnSubtitles, state.enabled && mobile && state.hideOwnSubtitles)
+    setFlag(root, ATTRS.hidePluginPageSubtitles, state.enabled && mobile && state.hidePluginPageSubtitles)
     setFlag(root, ATTRS.safeArea, state.enabled && mobile && state.safeArea)
     setFlag(root, ATTRS.settingsFullscreen, media.matches && state.settingsFullscreen)
   }
