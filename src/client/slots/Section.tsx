@@ -164,13 +164,20 @@ export function Section({ controller }: SectionProps): ReactElement {
           </div>
           <Switch label="Safe area" checked={state.safeArea} onChange={(value) => update({ safeArea: value })} />
         </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Compact buttons</span>
+            <span className="msm-hint">Reduce button padding across the shell and settings panel.</span>
+          </div>
+          <Switch label="Compact buttons" checked={state.compactButtons} onChange={(value) => update({ compactButtons: value })} />
+        </div>
       </section>
 
       <section className="msm-card" aria-labelledby="msm-navigation-title">
         <h3 className="msm-card-title" id="msm-navigation-title">Navigation</h3>
         <div className="msm-row">
           <div className="msm-copy">
-            <span className="msm-label">Mode</span>
+            <span className="msm-label">Navigation mode</span>
             <span className="msm-hint">Choose how the sidebar is presented on mobile.</span>
           </div>
           <select
@@ -198,6 +205,10 @@ export function Section({ controller }: SectionProps): ReactElement {
             {!nav.topbarAvailable ? "Top bar unavailable in this host version." : ""}
           </div>
         ) : null}
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-sidebar-title">
+        <h3 className="msm-card-title" id="msm-sidebar-title">Sidebar</h3>
         <div className="msm-row">
           <div className="msm-copy">
             <span className="msm-label">Sidebar width</span>
@@ -213,68 +224,70 @@ export function Section({ controller }: SectionProps): ReactElement {
             <option value="86vw">86% width</option>
           </select>
         </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-page-settings-title">
+        <h3 className="msm-card-title" id="msm-page-settings-title">Page: settings</h3>
         <div className="msm-row">
           <div className="msm-copy">
-            <span className="msm-label">Compact header</span>
-            <span className="msm-hint">Hide secondary header actions and collapse breadcrumbs.</span>
+            <span className="msm-label">Full-screen settings panel</span>
+            <span className="msm-hint">Expand the host settings panel on narrow viewports.</span>
           </div>
-          <Switch label="Compact header" checked={state.compactHeader} onChange={(value) => update({ compactHeader: value })} />
+          <Switch label="Full-screen settings panel" checked={state.settingsFullscreen} onChange={(value) => update({ settingsFullscreen: value })} />
         </div>
         <div className="msm-row">
           <div className="msm-copy">
-            <span className="msm-label">Hide subtitles</span>
-            <span className="msm-hint">Hide descriptions under official settings items.</span>
+            <span className="msm-label">Hide settings descriptions</span>
+            <span className="msm-hint">Hide the description lines on official settings pages.</span>
           </div>
-          <Switch label="Hide subtitles" checked={state.hideSubtitles} onChange={(value) => update({ hideSubtitles: value })} />
+          <Switch label="Hide settings descriptions" checked={state.hideSubtitles} onChange={(value) => update({ hideSubtitles: value })} />
         </div>
         <div className="msm-row">
           <div className="msm-copy">
-            <span className="msm-label">Compact buttons</span>
-            <span className="msm-hint">Reduce button padding and spacing.</span>
+            <span className="msm-label">Dense settings rows</span>
+            <span className="msm-hint">Compress row spacing on official settings pages.</span>
           </div>
-          <Switch label="Compact buttons" checked={state.compactButtons} onChange={(value) => update({ compactButtons: value })} />
+          <Switch label="Dense settings rows" checked={state.denseSettings} onChange={(value) => update({ denseSettings: value })} />
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Hide section descriptions</span>
+            <span className="msm-hint">Hide the description lines in this section.</span>
+          </div>
+          <Switch label="Hide section descriptions" checked={state.hideOwnSubtitles} onChange={(value) => update({ hideOwnSubtitles: value })} />
         </div>
       </section>
 
-      <section className="msm-card" aria-labelledby="msm-text-title">
-        <h3 className="msm-card-title" id="msm-text-title">Text</h3>
+      <section className="msm-card" aria-labelledby="msm-page-plugins-title">
+        <h3 className="msm-card-title" id="msm-page-plugins-title">Page: plugins</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Hide plugins page subtitle</span>
+            <span className="msm-hint">Hide the subtitle under the Plugins page title.</span>
+          </div>
+          <Switch label="Hide plugins page subtitle" checked={state.hidePluginPageSubtitles} onChange={(value) => update({ hidePluginPageSubtitles: value })} />
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-area-session-title">
+        <h3 className="msm-card-title" id="msm-area-session-title">Area: session</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Compact session header</span>
+            <span className="msm-hint">Hide secondary header actions and collapse breadcrumbs.</span>
+          </div>
+          <Switch label="Compact session header" checked={state.compactHeader} onChange={(value) => update({ compactHeader: value })} />
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-area-preset-title">
+        <h3 className="msm-card-title" id="msm-area-preset-title">Area: preset</h3>
         <div className="msm-row">
           <div className="msm-copy">
             <span className="msm-label">Hide preset descriptions</span>
             <span className="msm-hint">Hide the description under each entry of the preset picker.</span>
           </div>
           <Switch label="Hide preset descriptions" checked={state.hidePresetDescriptions} onChange={(value) => update({ hidePresetDescriptions: value })} />
-        </div>
-        <div className="msm-row">
-          <div className="msm-copy">
-            <span className="msm-label">Hide plugin subtitles</span>
-            <span className="msm-hint">Hide the description lines in this section.</span>
-          </div>
-          <Switch label="Hide plugin subtitles" checked={state.hideOwnSubtitles} onChange={(value) => update({ hideOwnSubtitles: value })} />
-        </div>
-        <div className="msm-row">
-          <div className="msm-copy">
-            <span className="msm-label">Hide plugin page subtitles</span>
-            <span className="msm-hint">Hide the subtitle on the Plugins page.</span>
-          </div>
-          <Switch label="Hide plugin page subtitles" checked={state.hidePluginPageSubtitles} onChange={(value) => update({ hidePluginPageSubtitles: value })} />
-        </div>
-      </section>
-      <section className="msm-card" aria-labelledby="msm-settings-title">
-        <h3 className="msm-card-title" id="msm-settings-title">Settings panel</h3>
-        <div className="msm-row">
-          <div className="msm-copy">
-            <span className="msm-label">Full-screen settings</span>
-            <span className="msm-hint">Expand the host settings panel on narrow viewports.</span>
-          </div>
-          <Switch label="Full-screen settings" checked={state.settingsFullscreen} onChange={(value) => update({ settingsFullscreen: value })} />
-        </div>
-        <div className="msm-row">
-          <div className="msm-copy">
-            <span className="msm-label">Dense settings</span>
-            <span className="msm-hint">Compress row spacing on official settings pages.</span>
-          </div>
-          <Switch label="Dense settings" checked={state.denseSettings} onChange={(value) => update({ denseSettings: value })} />
         </div>
       </section>
 
