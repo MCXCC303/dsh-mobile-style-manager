@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from "react"
 import { ATTRS } from "../../shared/identity"
-import type { Gate, SettingsV1 } from "../../shared/state"
+import type { Gate, NavMode, SettingsV1, SidebarWidth } from "../../shared/state"
 import type { Controller } from "../core/controller"
 import type { HealthReport } from "../core/health"
 
@@ -41,6 +41,7 @@ function Switch({ label, checked, onChange }: SwitchProps): ReactElement {
 
 export function Section({ controller }: SectionProps): ReactElement {
   const state = useSyncExternalStore(controller.store.subscribe, controller.store.get, controller.store.get)
+  const nav = useSyncExternalStore(controller.subscribeNav, controller.getNavState, controller.getNavState)
   const [viewport, setViewport] = useState<Viewport>(readViewport)
   const [health, setHealth] = useState<HealthReport>(() => controller.refreshHealth())
   const [confirmReset, setConfirmReset] = useState(false)
@@ -162,6 +163,74 @@ export function Section({ controller }: SectionProps): ReactElement {
             <span className="msm-hint">Reserve bottom space for device insets.</span>
           </div>
           <Switch label="Safe area" checked={state.safeArea} onChange={(value) => update({ safeArea: value })} />
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-navigation-title">
+        <h3 className="msm-card-title" id="msm-navigation-title">Navigation</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Mode</span>
+            <span className="msm-hint">Choose how the sidebar is presented on mobile.</span>
+          </div>
+          <select
+            aria-label="Navigation mode"
+            className="msm-select"
+            value={state.navMode}
+            onChange={(event) => update({ navMode: event.currentTarget.value as NavMode })}
+          >
+            <option value="rail">Rail</option>
+            <option value="drawer" disabled={!nav.drawerAvailable}>Drawer</option>
+            <option value="topbar" disabled={!nav.topbarAvailable}>Top bar</option>
+          </select>
+        </div>
+        {state.navMode !== nav.effective ? (
+          <div className="msm-kv">
+            <span>Effective mode</span>
+            <span>{nav.effective === "topbar" ? "Top bar" : nav.effective === "drawer" ? "Drawer" : "Rail"}</span>
+          </div>
+        ) : null}
+        {!nav.drawerAvailable || !nav.topbarAvailable ? (
+          <div className="msm-hint">
+            {!nav.drawerAvailable ? "Drawer unavailable in this host version. " : ""}
+            {!nav.topbarAvailable ? "Top bar unavailable in this host version." : ""}
+          </div>
+        ) : null}
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Sidebar width</span>
+            <span className="msm-hint">Width of the drawer on mobile.</span>
+          </div>
+          <select
+            aria-label="Sidebar width"
+            className="msm-select"
+            value={state.sidebarWidth}
+            onChange={(event) => update({ sidebarWidth: event.currentTarget.value as SidebarWidth })}
+          >
+            <option value="full">Full width</option>
+            <option value="86vw">86% width</option>
+          </select>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Compact header</span>
+            <span className="msm-hint">Hide secondary header actions and collapse breadcrumbs.</span>
+          </div>
+          <Switch label="Compact header" checked={state.compactHeader} onChange={(value) => update({ compactHeader: value })} />
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Hide subtitles</span>
+            <span className="msm-hint">Hide session times and row actions without changing row height.</span>
+          </div>
+          <Switch label="Hide subtitles" checked={state.hideSubtitles} onChange={(value) => update({ hideSubtitles: value })} />
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Compact buttons</span>
+            <span className="msm-hint">Tighten header and composer buttons.</span>
+          </div>
+          <Switch label="Compact buttons" checked={state.compactButtons} onChange={(value) => update({ compactButtons: value })} />
         </div>
       </section>
 

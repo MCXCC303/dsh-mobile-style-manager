@@ -10,8 +10,6 @@ export interface StyleLayer {
 
 const ROOT_ATTRS = [
   ATTRS.active,
-  ATTRS.nav,
-  ATTRS.sidebar,
   ATTRS.compactHeader,
   ATTRS.hideSubtitles,
   ATTRS.compactButtons,
@@ -29,11 +27,6 @@ function createStyle(id: string): HTMLStyleElement {
 function setFlag(root: HTMLElement, name: string, on: boolean): void {
   if (on) root.setAttribute(name, "")
   else root.removeAttribute(name)
-}
-
-function setValue(root: HTMLElement, name: string, value: string | null): void {
-  if (value === null) root.removeAttribute(name)
-  else root.setAttribute(name, value)
 }
 
 export function createStyleLayer(store: Store): StyleLayer {
@@ -55,8 +48,6 @@ export function createStyleLayer(store: Store): StyleLayer {
   const syncRoot = (state: SettingsV1): void => {
     const mobile = isMobile(state)
     setFlag(root, ATTRS.active, state.enabled && mobile)
-    setValue(root, ATTRS.nav, mobile ? state.navMode : null)
-    setValue(root, ATTRS.sidebar, mobile ? state.sidebarWidth : null)
     setFlag(root, ATTRS.compactHeader, state.enabled && mobile && state.compactHeader)
     setFlag(root, ATTRS.hideSubtitles, state.enabled && mobile && state.hideSubtitles)
     setFlag(root, ATTRS.compactButtons, state.enabled && mobile && state.compactButtons)

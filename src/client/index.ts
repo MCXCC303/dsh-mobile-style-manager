@@ -1,6 +1,7 @@
 import { PKG } from "../shared/identity"
 import { createController } from "./core/controller"
 import { installFeatures } from "./features/registry"
+import { navigationFeature } from "./features/navigation"
 import { settingsFeature } from "./features/settings"
 import type { ClientContext } from "./types"
 
@@ -15,7 +16,7 @@ declare global {
 
 export function apply(ctx: ClientContext): void {
   window.__DSH_MSM_LOADED__ = "0.1.0"
-  const controller = createController()
+  const controller = createController(ctx)
   ctx.effect(() => () => controller.dispose(), PKG + ": lifetime")
-  installFeatures([settingsFeature], controller, ctx)
+  installFeatures([settingsFeature, navigationFeature], controller, ctx)
 }
