@@ -221,14 +221,14 @@ export function Section({ controller }: SectionProps): ReactElement {
         <div className="msm-row">
           <div className="msm-copy">
             <span className="msm-label">Hide subtitles</span>
-            <span className="msm-hint">Hide session times and row actions without changing row height.</span>
+            <span className="msm-hint">Hide descriptions under official settings items.</span>
           </div>
           <Switch label="Hide subtitles" checked={state.hideSubtitles} onChange={(value) => update({ hideSubtitles: value })} />
         </div>
         <div className="msm-row">
           <div className="msm-copy">
             <span className="msm-label">Compact buttons</span>
-            <span className="msm-hint">Tighten header and composer buttons.</span>
+            <span className="msm-hint">Reduce button padding and spacing.</span>
           </div>
           <Switch label="Compact buttons" checked={state.compactButtons} onChange={(value) => update({ compactButtons: value })} />
         </div>
