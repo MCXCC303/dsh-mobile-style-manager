@@ -72,9 +72,3 @@ export function gateQuery(breakpoint: number, mode: "viewport" | "device"): stri
   const base = "(max-width: " + breakpoint + "px)"
   return mode === "device" ? base + " and (pointer: coarse)" : base
 }
-
-export function wrapCss(css: string, breakpoint: number, mode: "viewport" | "device", raw = false): string {
-  if (css.trim() === "") return ""
-  if (raw) return css
-  return "@media " + gateQuery(breakpoint, mode) + " {\n" + css + "\n}"
-}

@@ -1,7 +1,7 @@
 import { ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery } from "../../shared/identity"
-import { scanCss, wrapCss } from "../../shared/css"
+import { gateQuery, scanCss } from "../../shared/css"
 import type { SettingsV1 } from "../../shared/state"
-import { buildSettingsCss, buildSkin } from "../skin"
+import { buildSkin, settingsDialogCss, settingsUiCss } from "../skin"
 import type { Store } from "./store"
 
 export interface StyleLayer {
@@ -17,10 +17,17 @@ const ROOT_ATTRS = [
   ATTRS.settingsFullscreen,
 ] as const
 
-function createStyle(id: string): HTMLStyleElement {
+/** Matches every viewport. */
+const ALWAYS = "all"
+/** Applies to no viewport; the sheet stays parsed without matching. */
+const NEVER = "not all"
+
+function createStyle(id: string, css: string, media: string): HTMLStyleElement {
   const style = document.createElement("style")
   style.id = id
   style.dataset.plugin = PKG
+  style.media = media
+  style.textContent = css
   return style
 }
 
@@ -29,14 +36,19 @@ function setFlag(root: HTMLElement, name: string, on: boolean): void {
   else root.removeAttribute(name)
 }
 
+function setMedia(style: HTMLStyleElement, media: string): void {
+  if (style.media !== media) style.media = media
+}
+
 export function createStyleLayer(store: Store): StyleLayer {
   const root = document.documentElement
-  const skin = createStyle(STYLE_IDS.skin)
-  const settings = createStyle(STYLE_IDS.settings)
-  const user = createStyle(STYLE_IDS.user)
-  document.head.append(skin, settings, user)
-
   const initial = store.get()
+  const skin = createStyle(STYLE_IDS.skin, buildSkin(), NEVER)
+  const settings = createStyle(STYLE_IDS.settings, settingsUiCss, ALWAYS)
+  const dialog = createStyle(STYLE_IDS.settingsDialog, settingsDialogCss, NEVER)
+  const user = createStyle(STYLE_IDS.user, "", NEVER)
+  document.head.append(skin, settings, dialog, user)
+
   let media = window.matchMedia(mobileQuery(initial.breakpoint))
   const coarse = window.matchMedia(coarseQuery)
   let lastBreakpoint = initial.breakpoint
@@ -57,14 +69,17 @@ export function createStyleLayer(store: Store): StyleLayer {
 
   const render = (state: SettingsV1): void => {
     syncRoot(state)
-    skin.textContent = state.enabled && state.useBuiltinSkin
-      ? wrapCss(buildSkin(), state.breakpoint, state.gate)
-      : ""
-    settings.textContent = buildSettingsCss(state.breakpoint)
+    setMedia(skin, state.enabled && state.useBuiltinSkin
+      ? gateQuery(state.breakpoint, state.gate)
+      : NEVER)
+    setMedia(dialog, mobileQuery(state.breakpoint))
     const css = state.customCss.trim()
-    user.textContent = state.enabled && css !== "" && scanCss(css).ok
-      ? wrapCss(css, state.breakpoint, state.gate, state.rawCss)
-      : ""
+    const accepted = state.enabled && css !== "" && scanCss(css).ok
+    const text = accepted ? css : ""
+    if (user.textContent !== text) user.textContent = text
+    setMedia(user, accepted
+      ? state.rawCss ? ALWAYS : gateQuery(state.breakpoint, state.gate)
+      : NEVER)
   }
 
   const onMediaChange = (): void => {
@@ -95,6 +110,7 @@ export function createStyleLayer(store: Store): StyleLayer {
       for (const name of ROOT_ATTRS) root.removeAttribute(name)
       skin.remove()
       settings.remove()
+      dialog.remove()
       user.remove()
     },
   }

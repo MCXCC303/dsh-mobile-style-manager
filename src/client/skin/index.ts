@@ -1,10 +1,11 @@
-import { baseSkin } from "./base.css"
-import { compactSkin } from "./compact.css"
-import { navigationSkin } from "./navigation.css"
-import { buildSettingsCss } from "./settings.css"
+import baseSkin from "./base.css?inline"
+import compactSkin from "./compact.css?inline"
+import navigationSkin from "./navigation.css?inline"
+import settingsDialogCss from "./settings-dialog.css?inline"
+import settingsUiCss from "./settings-ui.css?inline"
 
 export function buildSkin(): string {
   return [baseSkin, compactSkin, navigationSkin].join("\n")
 }
 
-export { buildSettingsCss }
+export { settingsDialogCss, settingsUiCss }

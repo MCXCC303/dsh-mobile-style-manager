@@ -4,6 +4,7 @@ export const STORAGE_KEY = PKG + ":v1"
 export const STYLE_IDS = {
   skin: PKG + ":skin",
   settings: PKG + ":settings",
+  settingsDialog: PKG + ":settings-dialog",
   user: PKG + ":user",
 } as const
 

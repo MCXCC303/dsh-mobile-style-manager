@@ -1,0 +1,54 @@
+html[data-dsh-msm-settings-fullscreen] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100dvh !important;
+  max-height: 100% !important;
+  border-radius: 0 !important;
+  flex-direction: column !important;
+}
+
+html[data-dsh-msm-settings-fullscreen] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) > nav,
+html[data-dsh-msm-settings-fullscreen] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) > [class*="_nav"] {
+  width: 100% !important;
+  height: auto !important;
+  padding: 8px 12px !important;
+  gap: 8px !important;
+}
+
+html[data-dsh-msm-settings-fullscreen] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) [class*="_navTitle"] {
+  display: none !important;
+}
+
+html[data-dsh-msm-settings-fullscreen] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) [class*="_navList"] {
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  gap: 4px !important;
+  scrollbar-width: none !important;
+}
+
+html[data-dsh-msm-settings-fullscreen] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) [class*="_navList"]::-webkit-scrollbar {
+  display: none !important;
+}
+
+html[data-dsh-msm-settings-fullscreen] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) [class*="_navCell"] {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  height: 36px !important;
+  padding: 6px 12px !important;
+  white-space: nowrap !important;
+}
+
+html[data-dsh-msm-settings-fullscreen] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) > [class*="_content"] {
+  width: 100% !important;
+  min-height: 0 !important;
+}
+
+html[data-dsh-msm-settings-fullscreen] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) [class*="_header"] {
+  height: 48px !important;
+  padding: 8px 12px !important;
+}
+
+html[data-dsh-msm-settings-fullscreen] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) [class*="_options"] {
+  padding: 0 12px 12px !important;
+}
