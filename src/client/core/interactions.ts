@@ -16,6 +16,7 @@ export function createInteractions(controller: Controller): Interactions {
   let installed = false
   let frame: HTMLElement | null = null
   let observer: MutationObserver | null = null
+  let frameObserver: MutationObserver | null = null
   let unsubscribeSidebar: (() => void) | null = null
   let bodyOverflow: string | null = null
   let lastOpen = false
@@ -83,10 +84,30 @@ export function createInteractions(controller: Controller): Interactions {
     else focusMenu()
   }
 
+  const stopFrameObserver = (): void => {
+    frameObserver?.disconnect()
+    frameObserver = null
+  }
+
+  // apply() can run before the React frame mounts; keep watching until it exists.
+  const watchForFrame = (): void => {
+    if (frameObserver !== null || disposed) return
+    frameObserver = new MutationObserver(() => {
+      if (installed || findFrame() === null) return
+      stopFrameObserver()
+      sync()
+    })
+    frameObserver.observe(document.documentElement, { childList: true, subtree: true })
+  }
+
   const install = (): void => {
     if (installed || disposed) return
     const observed = findFrame()
-    if (observed === null) return
+    if (observed === null) {
+      watchForFrame()
+      return
+    }
+    stopFrameObserver()
     frame = observed
     installed = true
     observer = new MutationObserver(() => {
@@ -102,6 +123,7 @@ export function createInteractions(controller: Controller): Interactions {
   }
 
   const uninstall = (): void => {
+    stopFrameObserver()
     if (!installed) return
     installed = false
     observer?.disconnect()
