@@ -248,7 +248,7 @@ export function Section({ controller }: SectionProps): ReactElement {
         <div className="msm-row">
           <div className="msm-copy">
             <span className="msm-label">Hide plugin subtitles</span>
-            <span className="msm-hint">Hide the description under this section title.</span>
+            <span className="msm-hint">Hide the description lines in this section.</span>
           </div>
           <Switch label="Hide plugin subtitles" checked={state.hideOwnSubtitles} onChange={(value) => update({ hideOwnSubtitles: value })} />
         </div>

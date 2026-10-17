@@ -275,6 +275,6 @@ html[data-dsh-msm][data-dsh-msm-dense-settings] [role="dialog"]:is(:has([data-sl
   padding-bottom: 6px !important;
 }
 
-html[data-dsh-msm][data-dsh-msm-hide-own-subtitles] .msm-subtitle {
+html[data-dsh-msm][data-dsh-msm-hide-own-subtitles] :is(.msm-subtitle, .msm-hint) {
   display: none !important;
 }
