@@ -1,0 +1,224 @@
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from "react"
+import { ATTRS } from "../../shared/identity"
+import type { Gate, SettingsV1 } from "../../shared/state"
+import type { Controller } from "../core/controller"
+import type { HealthReport } from "../core/health"
+
+interface SectionProps {
+  close: () => void
+  controller: Controller
+}
+
+interface Viewport {
+  width: number
+  height: number
+}
+
+interface SwitchProps {
+  label: string
+  checked: boolean
+  onChange: (value: boolean) => void
+}
+
+function readViewport(): Viewport {
+  return { width: window.innerWidth, height: window.innerHeight }
+}
+
+function Switch({ label, checked, onChange }: SwitchProps): ReactElement {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-label={label}
+      aria-checked={checked}
+      className={checked ? "msm-switch msm-switch-on" : "msm-switch"}
+      onClick={() => onChange(!checked)}
+    >
+      <span className="msm-switch-thumb" aria-hidden="true" />
+    </button>
+  )
+}
+
+export function Section({ controller }: SectionProps): ReactElement {
+  const state = useSyncExternalStore(controller.store.subscribe, controller.store.get, controller.store.get)
+  const [viewport, setViewport] = useState<Viewport>(readViewport)
+  const [health, setHealth] = useState<HealthReport>(() => controller.refreshHealth())
+  const [confirmReset, setConfirmReset] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const onResize = (): void => setViewport(readViewport())
+    window.addEventListener("resize", onResize)
+    return () => {
+      window.removeEventListener("resize", onResize)
+    }
+  }, [])
+
+  useEffect(() => {
+    const dialog = rootRef.current?.closest("[role=dialog]")
+    dialog?.setAttribute(ATTRS.dialog, "")
+    return () => {
+      dialog?.removeAttribute(ATTRS.dialog)
+    }
+  }, [])
+
+  useEffect(() => {
+    const dialog = rootRef.current?.closest("[role=dialog]")
+    if (!dialog) return
+    const navItem = [...dialog.querySelectorAll<HTMLElement>('button, [role="button"], [role="tab"], a')]
+      .find((element) => (element.textContent || "").trim() === "Mobile styles")
+    navItem?.scrollIntoView({ block: "nearest", inline: "center" })
+  }, [])
+
+  const update = (patch: Partial<SettingsV1>): void => {
+    controller.store.set(patch)
+  }
+
+  const recheckHealth = (): void => {
+    setHealth(controller.refreshHealth())
+  }
+
+  const mobile = state.enabled
+    && viewport.width <= state.breakpoint
+    && (state.gate === "viewport" || window.matchMedia("(pointer: coarse)").matches)
+
+  return (
+    <div className="msm-section" data-dsh-msm-section="" ref={rootRef}>
+      <header className="msm-header">
+        <h2 className="msm-title">Mobile styles</h2>
+        <p className="msm-subtitle">
+          Controls the layout below the breakpoint. Desktop layout is unchanged.
+        </p>
+      </header>
+
+      <section className="msm-card" aria-labelledby="msm-status-title">
+        <h3 className="msm-card-title" id="msm-status-title">Status</h3>
+        <div className="msm-kv">
+          <span>Viewport</span>
+          <span>{viewport.width} x {viewport.height} px</span>
+        </div>
+        <div className="msm-kv">
+          <span>Mobile mode</span>
+          <span>{mobile ? "Active" : "Inactive"}</span>
+        </div>
+        <div className="msm-kv">
+          <span>Settings storage</span>
+          <span>{controller.store.isPersistent() ? "Local browser" : "Memory only"}</span>
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-layout-title">
+        <h3 className="msm-card-title" id="msm-layout-title">Layout</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Enabled</span>
+            <span className="msm-hint">Apply mobile styles in narrow viewports.</span>
+          </div>
+          <Switch label="Enabled" checked={state.enabled} onChange={(value) => update({ enabled: value })} />
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Built-in skin</span>
+            <span className="msm-hint">Use the bundled mobile layout rules.</span>
+          </div>
+          <Switch label="Built-in skin" checked={state.useBuiltinSkin} onChange={(value) => update({ useBuiltinSkin: value })} />
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Breakpoint</span>
+            <span className="msm-hint">Widths at or below this value use mobile styles.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Breakpoint"
+              type="range"
+              min={480}
+              max={1024}
+              step={1}
+              value={state.breakpoint}
+              onChange={(event) => update({ breakpoint: Number(event.currentTarget.value) })}
+            />
+            <output>{state.breakpoint}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Apply to</span>
+            <span className="msm-hint">Choose the signal that activates mobile styles.</span>
+          </div>
+          <select
+            aria-label="Apply to"
+            className="msm-select"
+            value={state.gate}
+            onChange={(event) => update({ gate: event.currentTarget.value as Gate })}
+          >
+            <option value="viewport">Viewport width</option>
+            <option value="device">Touch devices</option>
+          </select>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Safe area</span>
+            <span className="msm-hint">Reserve bottom space for device insets.</span>
+          </div>
+          <Switch label="Safe area" checked={state.safeArea} onChange={(value) => update({ safeArea: value })} />
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-settings-title">
+        <h3 className="msm-card-title" id="msm-settings-title">Settings panel</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Full-screen settings</span>
+            <span className="msm-hint">Expand the host settings panel on narrow viewports.</span>
+          </div>
+          <Switch label="Full-screen settings" checked={state.settingsFullscreen} onChange={(value) => update({ settingsFullscreen: value })} />
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-compat-title">
+        <h3 className="msm-card-title" id="msm-compat-title">Compatibility</h3>
+        <div className="msm-kv">
+          <span>Host anchors</span>
+          <span>{Object.values(health.anchors).filter(Boolean).length} / {Object.keys(health.anchors).length}</span>
+        </div>
+        <ul className="msm-anchor-list">
+          {Object.entries(health.anchors).map(([name, found]) => (
+            <li key={name} className={found ? "msm-anchor msm-anchor-found" : "msm-anchor msm-anchor-missing"}>
+              <span>{name}</span>
+              <span>{found ? "Found" : "Missing"}</span>
+            </li>
+          ))}
+        </ul>
+        <button type="button" className="msm-button" onClick={recheckHealth}>Recheck anchors</button>
+        {controller.errors.length > 0 ? (
+          <div className="msm-errors" role="alert">
+            <strong>Feature errors</strong>
+            <ul>
+              {controller.errors.map((error, index) => (
+                <li key={index + ":" + error}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </section>
+
+      <div className="msm-actions">
+        <button
+          type="button"
+          className={confirmReset ? "msm-button msm-button-danger" : "msm-button"}
+          onClick={() => {
+            if (!confirmReset) {
+              setConfirmReset(true)
+              return
+            }
+            controller.store.reset()
+            setConfirmReset(false)
+          }}
+        >
+          {confirmReset ? "Click again to reset" : "Reset to defaults"}
+        </button>
+      </div>
+    </div>
+  )
+}
