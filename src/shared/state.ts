@@ -1,5 +1,8 @@
 export const SETTINGS_VERSION = 1
 
+export const INPUT_RADIUS = { min: 8, max: 32, defaultValue: 28 } as const
+export const INPUT_FONT_SIZE = { min: 12, max: 18, defaultValue: 14 } as const
+
 export type Gate = "viewport" | "device"
 export type NavMode = "rail" | "drawer" | "topbar"
 export type SidebarWidth = "full" | "86vw"
@@ -27,6 +30,9 @@ export interface SettingsV1 {
   denseSettings: boolean
   hideOwnSubtitles: boolean
   hidePluginPageSubtitles: boolean
+  inputRadius: number
+  inputFontSize: number
+  hideComposerMeta: boolean
   safeArea: boolean
   customCss: string
   rawCss: boolean
@@ -56,6 +62,9 @@ export function createDefaultSettings(): SettingsV1 {
     denseSettings: false,
     hideOwnSubtitles: false,
     hidePluginPageSubtitles: false,
+    inputRadius: INPUT_RADIUS.defaultValue,
+    inputFontSize: INPUT_FONT_SIZE.defaultValue,
+    hideComposerMeta: false,
     safeArea: true,
     customCss: "",
     rawCss: false,
@@ -89,6 +98,11 @@ function readEnum<T extends string>(value: unknown, allowed: readonly T[], fallb
 function readBreakpoint(value: unknown): number {
   if (typeof value !== "number" || !Number.isFinite(value)) return 768
   return Math.min(1024, Math.max(480, Math.round(value)))
+}
+
+function readClamped(value: unknown, fallback: number, min: number, max: number): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) return fallback
+  return Math.min(max, Math.max(min, Math.round(value)))
 }
 
 function readPreview(value: unknown, fallback: PreviewSettings): PreviewSettings {
@@ -125,6 +139,9 @@ export function normalizeState(value: unknown): SettingsV1 {
     denseSettings: readBoolean(value.denseSettings, defaults.denseSettings),
     hideOwnSubtitles: readBoolean(value.hideOwnSubtitles, defaults.hideOwnSubtitles),
     hidePluginPageSubtitles: readBoolean(value.hidePluginPageSubtitles, defaults.hidePluginPageSubtitles),
+    inputRadius: readClamped(value.inputRadius, defaults.inputRadius, INPUT_RADIUS.min, INPUT_RADIUS.max),
+    inputFontSize: readClamped(value.inputFontSize, defaults.inputFontSize, INPUT_FONT_SIZE.min, INPUT_FONT_SIZE.max),
+    hideComposerMeta: readBoolean(value.hideComposerMeta, defaults.hideComposerMeta),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),
     customCss: readString(value.customCss, defaults.customCss),
     rawCss: readBoolean(value.rawCss, defaults.rawCss),

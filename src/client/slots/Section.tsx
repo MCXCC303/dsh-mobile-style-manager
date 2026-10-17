@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from "react"
 import { ATTRS } from "../../shared/identity"
-import type { Gate, NavMode, SettingsV1, SidebarWidth } from "../../shared/state"
+import { INPUT_FONT_SIZE, INPUT_RADIUS, type Gate, type NavMode, type SettingsV1, type SidebarWidth } from "../../shared/state"
 import type { Controller } from "../core/controller"
 import type { HealthReport } from "../core/health"
 
@@ -277,6 +277,53 @@ export function Section({ controller }: SectionProps): ReactElement {
             <span className="msm-hint">Hide secondary header actions and collapse breadcrumbs.</span>
           </div>
           <Switch label="Compact session header" checked={state.compactHeader} onChange={(value) => update({ compactHeader: value })} />
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-area-input-title">
+        <h3 className="msm-card-title" id="msm-area-input-title">Area: input</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Input corner radius</span>
+            <span className="msm-hint">Round the composer input container.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Input corner radius"
+              type="range"
+              min={INPUT_RADIUS.min}
+              max={INPUT_RADIUS.max}
+              step={1}
+              value={state.inputRadius}
+              onChange={(event) => update({ inputRadius: Number(event.currentTarget.value) })}
+            />
+            <output>{state.inputRadius}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Input font size</span>
+            <span className="msm-hint">Size of the composer text and placeholder.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Input font size"
+              type="range"
+              min={INPUT_FONT_SIZE.min}
+              max={INPUT_FONT_SIZE.max}
+              step={1}
+              value={state.inputFontSize}
+              onChange={(event) => update({ inputFontSize: Number(event.currentTarget.value) })}
+            />
+            <output>{state.inputFontSize}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Hide composer meta</span>
+            <span className="msm-hint">Hide the turn, token, and context statistics below the composer.</span>
+          </div>
+          <Switch label="Hide composer meta" checked={state.hideComposerMeta} onChange={(value) => update({ hideComposerMeta: value })} />
         </div>
       </section>
 

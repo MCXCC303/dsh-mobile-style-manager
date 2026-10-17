@@ -1,0 +1,13 @@
+html[data-dsh-msm][data-dsh-msm-input-radius] [data-slot="conversation.composer"] [class*="_card"]:has([role="textbox"]) {
+  border-radius: var(--msm-input-radius) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-input-font] [data-slot="conversation.composer"] [role="textbox"][class*="_input"],
+html[data-dsh-msm][data-dsh-msm-input-font] [data-slot="conversation.composer"] [class*="_placeholder"] {
+  font-size: var(--msm-input-font-size) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-hide-composer-meta] [data-slot="conversation.composer"] [class*="_dock"]:has(> [data-slot="conversation.composer.dock"]),
+html[data-dsh-msm][data-dsh-msm-hide-composer-meta] [data-slot="conversation.composer.dock"] {
+  display: none !important;
+}

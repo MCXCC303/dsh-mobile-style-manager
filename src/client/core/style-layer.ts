@@ -1,6 +1,6 @@
 import { ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery } from "../../shared/identity"
 import { gateQuery, scanCss } from "../../shared/css"
-import type { SettingsV1 } from "../../shared/state"
+import { INPUT_FONT_SIZE, INPUT_RADIUS, type SettingsV1 } from "../../shared/state"
 import { buildSkin, settingsDialogCss, settingsUiCss } from "../skin"
 import type { Store } from "./store"
 
@@ -17,6 +17,9 @@ const ROOT_ATTRS = [
   ATTRS.denseSettings,
   ATTRS.hideOwnSubtitles,
   ATTRS.hidePluginPageSubtitles,
+  ATTRS.inputRadius,
+  ATTRS.inputFontSize,
+  ATTRS.hideComposerMeta,
   ATTRS.safeArea,
   ATTRS.settingsFullscreen,
 ] as const
@@ -71,7 +74,12 @@ export function createStyleLayer(store: Store): StyleLayer {
     setFlag(root, ATTRS.denseSettings, state.enabled && mobile && state.denseSettings)
     setFlag(root, ATTRS.hideOwnSubtitles, state.enabled && mobile && state.hideOwnSubtitles)
     setFlag(root, ATTRS.hidePluginPageSubtitles, state.enabled && mobile && state.hidePluginPageSubtitles)
+    setFlag(root, ATTRS.inputRadius, state.enabled && mobile && state.inputRadius !== INPUT_RADIUS.defaultValue)
+    setFlag(root, ATTRS.inputFontSize, state.enabled && mobile && state.inputFontSize !== INPUT_FONT_SIZE.defaultValue)
+    setFlag(root, ATTRS.hideComposerMeta, state.enabled && mobile && state.hideComposerMeta)
     setFlag(root, ATTRS.safeArea, state.enabled && mobile && state.safeArea)
+    root.style.setProperty("--msm-input-radius", state.inputRadius + "px")
+    root.style.setProperty("--msm-input-font-size", state.inputFontSize + "px")
     setFlag(root, ATTRS.settingsFullscreen, media.matches && state.settingsFullscreen)
   }
 
@@ -116,6 +124,8 @@ export function createStyleLayer(store: Store): StyleLayer {
       media.removeEventListener("change", onMediaChange)
       coarse.removeEventListener("change", onMediaChange)
       for (const name of ROOT_ATTRS) root.removeAttribute(name)
+      root.style.removeProperty("--msm-input-radius")
+      root.style.removeProperty("--msm-input-font-size")
       skin.remove()
       settings.remove()
       dialog.remove()
