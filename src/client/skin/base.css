@@ -2,7 +2,7 @@ html[data-dsh-msm] body {
   overflow-x: hidden;
 }
 
-html[data-dsh-msm] [class*="_frame"] {
+html[data-dsh-msm] [class*="_frame"]:has(> [class*="_sidebarCol"]) {
   height: 100dvh !important;
   --dsh-conversation-column-width: 100% !important;
 }

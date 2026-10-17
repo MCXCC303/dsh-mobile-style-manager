@@ -1,10 +1,10 @@
-html[data-dsh-msm][data-dsh-msm-nav="drawer"] [class*="_frame"],
-html[data-dsh-msm][data-dsh-msm-nav="topbar"] [class*="_frame"] {
+html[data-dsh-msm][data-dsh-msm-nav="drawer"] [class*="_frame"]:has(> [class*="_sidebarCol"]),
+html[data-dsh-msm][data-dsh-msm-nav="topbar"] [class*="_frame"]:has(> [class*="_sidebarCol"]) {
   grid-template-columns: minmax(0, 1fr) auto !important;
   height: 100dvh !important;
 }
 
-html[data-dsh-msm][data-dsh-msm-nav="topbar"] [class*="_frame"] {
+html[data-dsh-msm][data-dsh-msm-nav="topbar"] [class*="_frame"]:has(> [class*="_sidebarCol"]) {
   /* 100dvh must include the fixed rail; otherwise the composer sits 56px below the viewport. */
   box-sizing: border-box !important;
   padding-top: 56px !important;
@@ -158,8 +158,8 @@ html[data-dsh-msm][data-dsh-msm-nav="topbar"] [class*="_sidebarCol"] > * > [clas
   box-sizing: border-box !important;
 }
 
-html[data-dsh-msm][data-dsh-msm-nav="drawer"][data-dsh-msm-sidebar="86vw"] [class*="_frame"]:not([data-sidebar-collapsed])::after,
-html[data-dsh-msm][data-dsh-msm-nav="topbar"][data-dsh-msm-sidebar="86vw"] [class*="_frame"]:not([data-sidebar-collapsed])::after {
+html[data-dsh-msm][data-dsh-msm-nav="drawer"][data-dsh-msm-sidebar="86vw"] [class*="_frame"]:has(> [class*="_sidebarCol"]):not([data-sidebar-collapsed])::after,
+html[data-dsh-msm][data-dsh-msm-nav="topbar"][data-dsh-msm-sidebar="86vw"] [class*="_frame"]:has(> [class*="_sidebarCol"]):not([data-sidebar-collapsed])::after {
   content: "" !important;
   position: fixed !important;
   inset: 0 !important;
