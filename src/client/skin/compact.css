@@ -91,6 +91,38 @@ html[data-dsh-msm][data-dsh-msm-compact-buttons][data-dsh-msm-settings-fullscree
   height: 26px !important;
 }
 
+/* More settings items per screen: tighter rows without dividers, and the appearance
+   choices share one row as icon+label buttons. */
+html[data-dsh-msm][data-dsh-msm-compact-buttons][data-dsh-msm-settings-fullscreen] [role="dialog"]:is([data-shortcut-modal="settings"], :has([data-slot="settings.section"])) :is([class$="_row"], [class*="_row "], [class$="_setting"], [class*="_setting "], [class$="_group"], [class*="_group "]) {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  border-bottom: 0 !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-compact-buttons][data-dsh-msm-settings-fullscreen] [role="dialog"]:is([data-shortcut-modal="settings"], :has([data-slot="settings.section"])) [class*="_cubeRow"] {
+  flex-wrap: nowrap !important;
+  gap: 6px !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-compact-buttons][data-dsh-msm-settings-fullscreen] [role="dialog"]:is([data-shortcut-modal="settings"], :has([data-slot="settings.section"])) [class*="_themeCube"] {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 36px !important;
+  padding: 6px 8px !important;
+  white-space: nowrap !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-compact-buttons][data-dsh-msm-settings-fullscreen] [role="dialog"]:is([data-shortcut-modal="settings"], :has([data-slot="settings.section"])) [class*="_themeCube"] > * {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+}
+
 @media (pointer: coarse) {
   html[data-dsh-msm] button[class*="_iconButton"] {
     position: relative !important;
