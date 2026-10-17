@@ -269,3 +269,12 @@
     width: 160px;
   }
 }
+
+html[data-dsh-msm][data-dsh-msm-dense-settings] [role="dialog"]:is(:has([data-slot="settings.section"]), [data-dsh-msm-dialog]) :is([class$="_row"], [class*="_row "], [class$="_setting"], [class*="_setting "]) {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-hide-own-subtitles] .msm-subtitle {
+  display: none !important;
+}
