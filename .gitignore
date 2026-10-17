@@ -8,6 +8,9 @@ package-lock.json
 
 # build output
 dist/
+lib/
+*.tgz
+*.tsbuildinfo
 
 # local-only documents
 docs/

@@ -1,0 +1,4 @@
+# Insert the plugin into the Web profile's Loader tree.
+- insert:
+    - id: ui-mobile-style-manager
+      name: dsh-mobile-style-manager

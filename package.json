@@ -1,0 +1,55 @@
+{
+  "name": "dsh-mobile-style-manager",
+  "version": "0.1.0",
+  "description": "Mobile layout and style manager for the DeepSeek Harness Web GUI",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=20",
+    "dsh": ">=0.1.0-rc.2 <0.3.0"
+  },
+  "dsh": {
+    "manifestVersion": 1,
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": []
+    }
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "node -e \"const fs=require('node:fs'); for (const p of ['lib','dist']) fs.rmSync(p,{recursive:true,force:true})\"",
+    "build": "tsc -p tsconfig.host.json && tsdown",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.client.json --noEmit",
+    "check": "node scripts/check-package.mjs",
+    "prepack": "npm run build && npm run check",
+    "pack": "node -e \"require('node:fs').mkdirSync('dist',{recursive:true})\" && npm pack --pack-destination dist"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "mobile",
+    "css"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "@types/react": "~18.3.1",
+    "react": "^18.2.0",
+    "tsdown": "^0.22.2",
+    "typescript": "^5.9.0"
+  }
+}
