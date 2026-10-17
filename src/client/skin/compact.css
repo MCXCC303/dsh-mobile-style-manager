@@ -58,6 +58,39 @@ html[data-dsh-msm][data-dsh-msm-compact-buttons] header[class*="_header"] [class
   gap: 4px !important;
 }
 
+/* The settings header is compacted only in the full-screen layout: at 325px the
+   non-full-screen panel leaves an 89px content column that cannot fit the action inline. */
+html[data-dsh-msm][data-dsh-msm-compact-buttons][data-dsh-msm-settings-fullscreen] [role="dialog"]:is([data-shortcut-modal="settings"], :has([data-slot="settings.section"])) [class*="_header"]:has(> [class*="_close"]) {
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 2px 8px !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-compact-buttons][data-dsh-msm-settings-fullscreen] [role="dialog"]:is([data-shortcut-modal="settings"], :has([data-slot="settings.section"])) [class*="_header"]:has(> [class*="_close"]) > [class*="_actions"] {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  gap: 4px !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-compact-buttons][data-dsh-msm-settings-fullscreen] [role="dialog"]:is([data-shortcut-modal="settings"], :has([data-slot="settings.section"])) [class*="_header"]:has(> [class*="_close"]) > [class*="_actions"] button {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex: 0 0 auto !important;
+  gap: 4px !important;
+  height: 26px !important;
+  min-height: 0 !important;
+  padding: 0 8px !important;
+  white-space: nowrap !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-compact-buttons][data-dsh-msm-settings-fullscreen] [role="dialog"]:is([data-shortcut-modal="settings"], :has([data-slot="settings.section"])) [class*="_header"]:has(> [class*="_close"]) > [class*="_close"] {
+  flex: 0 0 auto !important;
+  width: 26px !important;
+  height: 26px !important;
+}
+
 @media (pointer: coarse) {
   html[data-dsh-msm] button[class*="_iconButton"] {
     position: relative !important;
