@@ -22,3 +22,6 @@ composed.yml
 
 # researches
 .research/
+
+# worktree
+.worktrees/
