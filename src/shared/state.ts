@@ -23,6 +23,10 @@ export interface SettingsV1 {
   compactHeader: boolean
   hideSubtitles: boolean
   compactButtons: boolean
+  hidePresetDescriptions: boolean
+  denseSettings: boolean
+  hideOwnSubtitles: boolean
+  hidePluginPageSubtitles: boolean
   safeArea: boolean
   customCss: string
   rawCss: boolean
@@ -48,6 +52,10 @@ export function createDefaultSettings(): SettingsV1 {
     compactHeader: false,
     hideSubtitles: false,
     compactButtons: false,
+    hidePresetDescriptions: false,
+    denseSettings: false,
+    hideOwnSubtitles: false,
+    hidePluginPageSubtitles: false,
     safeArea: true,
     customCss: "",
     rawCss: false,
@@ -113,6 +121,10 @@ export function normalizeState(value: unknown): SettingsV1 {
     compactHeader: readBoolean(value.compactHeader, defaults.compactHeader),
     hideSubtitles: readBoolean(value.hideSubtitles, defaults.hideSubtitles),
     compactButtons: readBoolean(value.compactButtons, defaults.compactButtons),
+    hidePresetDescriptions: readBoolean(value.hidePresetDescriptions, defaults.hidePresetDescriptions),
+    denseSettings: readBoolean(value.denseSettings, defaults.denseSettings),
+    hideOwnSubtitles: readBoolean(value.hideOwnSubtitles, defaults.hideOwnSubtitles),
+    hidePluginPageSubtitles: readBoolean(value.hidePluginPageSubtitles, defaults.hidePluginPageSubtitles),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),
     customCss: readString(value.customCss, defaults.customCss),
     rawCss: readBoolean(value.rawCss, defaults.rawCss),
