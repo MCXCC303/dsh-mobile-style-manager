@@ -28,6 +28,7 @@ export interface SettingsV1 {
   hideOwnSubtitles: boolean
   hidePluginPageSubtitles: boolean
   bodyFontSize: number
+  overrideBodyFont: boolean
   safeArea: boolean
   customCss: string
   rawCss: boolean
@@ -58,6 +59,7 @@ export function createDefaultSettings(): SettingsV1 {
     hideOwnSubtitles: false,
     hidePluginPageSubtitles: false,
     bodyFontSize: 14,
+    overrideBodyFont: false,
     safeArea: true,
     customCss: "",
     rawCss: false,
@@ -95,7 +97,7 @@ function readBreakpoint(value: unknown): number {
 
 function readFontSize(value: unknown): number {
   if (typeof value !== "number" || !Number.isFinite(value)) return 14
-  return Math.min(20, Math.max(12, Math.round(value)))
+  return Math.min(20, Math.max(10, Math.round(value)))
 }
 
 function readPreview(value: unknown, fallback: PreviewSettings): PreviewSettings {
@@ -133,6 +135,7 @@ export function normalizeState(value: unknown): SettingsV1 {
     hideOwnSubtitles: readBoolean(value.hideOwnSubtitles, defaults.hideOwnSubtitles),
     hidePluginPageSubtitles: readBoolean(value.hidePluginPageSubtitles, defaults.hidePluginPageSubtitles),
     bodyFontSize: readFontSize(value.bodyFontSize),
+    overrideBodyFont: readBoolean(value.overrideBodyFont, defaults.overrideBodyFont),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),
     customCss: readString(value.customCss, defaults.customCss),
     rawCss: readBoolean(value.rawCss, defaults.rawCss),

@@ -5,6 +5,7 @@ export const STYLE_IDS = {
   skin: PKG + ":skin",
   settings: PKG + ":settings",
   settingsDialog: PKG + ":settings-dialog",
+  font: PKG + ":font",
   user: PKG + ":user",
 } as const
 

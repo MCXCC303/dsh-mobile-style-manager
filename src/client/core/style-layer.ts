@@ -51,7 +51,8 @@ export function createStyleLayer(store: Store): StyleLayer {
   const settings = createStyle(STYLE_IDS.settings, settingsUiCss, ALWAYS)
   const dialog = createStyle(STYLE_IDS.settingsDialog, settingsDialogCss, NEVER)
   const user = createStyle(STYLE_IDS.user, "", NEVER)
-  document.head.append(skin, settings, dialog, user)
+  const font = createStyle(STYLE_IDS.font, "", ALWAYS)
+  document.head.append(skin, settings, dialog, user, font)
 
   let media = window.matchMedia(mobileQuery(initial.breakpoint))
   const coarse = window.matchMedia(coarseQuery)
@@ -75,9 +76,15 @@ export function createStyleLayer(store: Store): StyleLayer {
     setFlag(root, ATTRS.settingsFullscreen, media.matches && state.settingsFullscreen)
   }
 
+  // An !important declaration in a style sheet outranks the host's inline value on body.
+  const syncBodyFont = (state: SettingsV1): void => {
+    const active = state.enabled && isMobile(state) && state.overrideBodyFont
+    const rule = active ? "body { --dsh-content-font-size: " + state.bodyFontSize + "px !important }" : ""
+    if (font.textContent !== rule) font.textContent = rule
+  }
   const render = (state: SettingsV1): void => {
     syncRoot(state)
-    root.style.setProperty("--msm-body-font-size", state.bodyFontSize + "px")
+    syncBodyFont(state)
     setMedia(skin, state.enabled && state.useBuiltinSkin
       ? gateQuery(state.breakpoint, state.gate)
       : NEVER)
@@ -116,7 +123,7 @@ export function createStyleLayer(store: Store): StyleLayer {
       unsubscribe()
       media.removeEventListener("change", onMediaChange)
       coarse.removeEventListener("change", onMediaChange)
-      root.style.removeProperty("--msm-body-font-size")
+      font.remove()
       for (const name of ROOT_ATTRS) root.removeAttribute(name)
       skin.remove()
       settings.remove()
