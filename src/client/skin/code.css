@@ -1,0 +1,45 @@
+/* .md-code-block is the host's stable root for fenced code blocks. Inline code is not inside it. */
+html[data-dsh-msm][data-dsh-msm-code-radius] .md-code-block {
+  --dsl-code-block-border-radius: var(--msm-code-block-radius);
+}
+
+/* Message fences use the host card layout and carry data-code-wrap. */
+html[data-dsh-msm][data-dsh-msm-code-padding] .md-code-block[data-code-wrap] [data-code-block-content] pre {
+  padding-left: var(--msm-code-block-padding) !important;
+  padding-right: var(--msm-code-block-padding) !important;
+}
+
+/* Host margins: 16px/11px (4px in compact markdown), with 0 on root first and last children. */
+html[data-dsh-msm][data-dsh-msm-code-margin] .md-code-block {
+  margin-top: calc(16px + var(--msm-code-block-margin)) !important;
+  margin-bottom: calc(16px + var(--msm-code-block-margin)) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-code-margin] .md-code-block:not(:last-child) {
+  margin-bottom: calc(11px + var(--msm-code-block-margin)) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-code-margin] [class*="_compact"] .md-code-block {
+  margin-top: calc(4px + var(--msm-code-block-margin)) !important;
+  margin-bottom: calc(4px + var(--msm-code-block-margin)) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-code-margin] [class*="_markdown"] > .md-code-block:first-child {
+  margin-top: var(--msm-code-block-margin) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-code-margin] [class*="_markdown"] > .md-code-block:last-child {
+  margin-bottom: var(--msm-code-block-margin) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-code-margin] [class*="_markdown"] li > .md-code-block:first-child {
+  margin-top: var(--msm-code-block-margin) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-code-margin] [class*="_markdown"][class*="_compact"] > .md-code-block:first-child {
+  margin-top: var(--msm-code-block-margin) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-code-margin] [class*="_markdown"][class*="_compact"] > .md-code-block:last-child {
+  margin-bottom: var(--msm-code-block-margin) !important;
+}

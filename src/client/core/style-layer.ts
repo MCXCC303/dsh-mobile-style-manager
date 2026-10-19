@@ -1,6 +1,6 @@
 import { ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery } from "../../shared/identity"
 import { gateQuery, scanCss } from "../../shared/css"
-import { DRAWER_WIDTH_MAX, INPUT_FONT_SIZE, INPUT_RADIUS, type SettingsV1 } from "../../shared/state"
+import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, INPUT_FONT_SIZE, INPUT_RADIUS, type SettingsV1 } from "../../shared/state"
 import { buildSkin, settingsDialogCss, settingsUiCss } from "../skin"
 import type { Store } from "./store"
 
@@ -20,6 +20,9 @@ const ROOT_ATTRS = [
   ATTRS.inputRadius,
   ATTRS.inputFontSize,
   ATTRS.hideComposerMeta,
+  ATTRS.codeBlockRadius,
+  ATTRS.codeBlockPadding,
+  ATTRS.codeBlockMargin,
   ATTRS.safeArea,
   ATTRS.settingsFullscreen,
   ATTRS.drawerScrim,
@@ -86,9 +89,15 @@ export function createStyleLayer(store: Store): StyleLayer {
     setFlag(root, ATTRS.inputRadius, state.enabled && mobile && state.inputRadius !== INPUT_RADIUS.defaultValue)
     setFlag(root, ATTRS.inputFontSize, state.enabled && mobile && state.inputFontSize !== INPUT_FONT_SIZE.defaultValue)
     setFlag(root, ATTRS.hideComposerMeta, state.enabled && mobile && state.hideComposerMeta)
+    setFlag(root, ATTRS.codeBlockRadius, state.enabled && mobile && state.codeBlockRadius !== CODE_BLOCK_RADIUS.defaultValue)
+    setFlag(root, ATTRS.codeBlockPadding, state.enabled && mobile && state.codeBlockPadding !== CODE_BLOCK_PADDING.defaultValue)
+    setFlag(root, ATTRS.codeBlockMargin, state.enabled && mobile && state.codeBlockMargin !== CODE_BLOCK_MARGIN.defaultValue)
     setFlag(root, ATTRS.safeArea, state.enabled && mobile && state.safeArea)
     root.style.setProperty("--msm-input-radius", state.inputRadius + "px")
     root.style.setProperty("--msm-input-font-size", state.inputFontSize + "px")
+    root.style.setProperty("--msm-code-block-radius", state.codeBlockRadius + "px")
+    root.style.setProperty("--msm-code-block-padding", state.codeBlockPadding + "px")
+    root.style.setProperty("--msm-code-block-margin", state.codeBlockMargin + "px")
     setFlag(root, ATTRS.settingsFullscreen, media.matches && state.settingsFullscreen)
     setFlag(root, ATTRS.drawerScrim, state.enabled && mobile && state.drawerWidth < DRAWER_WIDTH_MAX)
     setVar(root, "--msm-nav-size", state.enabled && mobile ? state.navSize + "px" : null)
@@ -146,6 +155,9 @@ export function createStyleLayer(store: Store): StyleLayer {
       for (const name of ROOT_ATTRS) root.removeAttribute(name)
       root.style.removeProperty("--msm-input-radius")
       root.style.removeProperty("--msm-input-font-size")
+      root.style.removeProperty("--msm-code-block-radius")
+      root.style.removeProperty("--msm-code-block-padding")
+      root.style.removeProperty("--msm-code-block-margin")
       for (const name of ROOT_VARS) root.style.removeProperty(name)
       skin.remove()
       settings.remove()

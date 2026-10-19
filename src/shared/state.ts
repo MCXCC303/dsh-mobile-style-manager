@@ -3,6 +3,12 @@ export const SETTINGS_VERSION = 1
 export const INPUT_RADIUS = { min: 8, max: 32, defaultValue: 28 } as const
 export const INPUT_FONT_SIZE = { min: 12, max: 18, defaultValue: 14 } as const
 
+// Radius and padding mirror the host's fenced code block. Margin is additive,
+// so its default of 0 keeps the host spacing instead of replacing it.
+export const CODE_BLOCK_RADIUS = { min: 0, max: 24, defaultValue: 16 } as const
+export const CODE_BLOCK_PADDING = { min: 0, max: 24, defaultValue: 22 } as const
+export const CODE_BLOCK_MARGIN = { min: 0, max: 24, defaultValue: 0 } as const
+
 export type Gate = "viewport" | "device"
 export type NavMode = "rail" | "drawer" | "topbar"
 export type PreviewScale = "fit" | number
@@ -33,6 +39,9 @@ export interface SettingsV1 {
   inputRadius: number
   inputFontSize: number
   hideComposerMeta: boolean
+  codeBlockRadius: number
+  codeBlockPadding: number
+  codeBlockMargin: number
   bodyFontSize: number
   overrideBodyFont: boolean
   safeArea: boolean
@@ -73,6 +82,9 @@ export function createDefaultSettings(): SettingsV1 {
     inputRadius: INPUT_RADIUS.defaultValue,
     inputFontSize: INPUT_FONT_SIZE.defaultValue,
     hideComposerMeta: false,
+    codeBlockRadius: CODE_BLOCK_RADIUS.defaultValue,
+    codeBlockPadding: CODE_BLOCK_PADDING.defaultValue,
+    codeBlockMargin: CODE_BLOCK_MARGIN.defaultValue,
     bodyFontSize: 14,
     overrideBodyFont: false,
     safeArea: true,
@@ -175,6 +187,9 @@ export function normalizeState(value: unknown): SettingsV1 {
     inputRadius: readClamped(value.inputRadius, defaults.inputRadius, INPUT_RADIUS.min, INPUT_RADIUS.max),
     inputFontSize: readClamped(value.inputFontSize, defaults.inputFontSize, INPUT_FONT_SIZE.min, INPUT_FONT_SIZE.max),
     hideComposerMeta: readBoolean(value.hideComposerMeta, defaults.hideComposerMeta),
+    codeBlockRadius: readClamped(value.codeBlockRadius, defaults.codeBlockRadius, CODE_BLOCK_RADIUS.min, CODE_BLOCK_RADIUS.max),
+    codeBlockPadding: readClamped(value.codeBlockPadding, defaults.codeBlockPadding, CODE_BLOCK_PADDING.min, CODE_BLOCK_PADDING.max),
+    codeBlockMargin: readClamped(value.codeBlockMargin, defaults.codeBlockMargin, CODE_BLOCK_MARGIN.min, CODE_BLOCK_MARGIN.max),
     bodyFontSize: readFontSize(value.bodyFontSize),
     overrideBodyFont: readBoolean(value.overrideBodyFont, defaults.overrideBodyFont),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),

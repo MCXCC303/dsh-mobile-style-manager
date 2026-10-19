@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from "react"
 import { ATTRS } from "../../shared/identity"
-import { DRAWER_WIDTH_MAX, DRAWER_WIDTH_MIN, INPUT_FONT_SIZE, INPUT_RADIUS, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
+import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, DRAWER_WIDTH_MIN, INPUT_FONT_SIZE, INPUT_RADIUS, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
 import type { Controller } from "../core/controller"
 import type { HealthReport } from "../core/health"
 
@@ -345,6 +345,64 @@ export function Section({ controller }: SectionProps): ReactElement {
             <span className="msm-hint">Hide the turn, token, and context statistics below the composer.</span>
           </div>
           <Switch label="Hide composer meta" checked={state.hideComposerMeta} onChange={(value) => update({ hideComposerMeta: value })} />
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-area-code-title">
+        <h3 className="msm-card-title" id="msm-area-code-title">Area: code</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Code block radius</span>
+            <span className="msm-hint">Round fenced code blocks, including their header.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Code block radius"
+              type="range"
+              min={CODE_BLOCK_RADIUS.min}
+              max={CODE_BLOCK_RADIUS.max}
+              step={1}
+              value={state.codeBlockRadius}
+              onChange={(event) => update({ codeBlockRadius: Number(event.currentTarget.value) })}
+            />
+            <output>{state.codeBlockRadius}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Code block padding</span>
+            <span className="msm-hint">Horizontal inset of fenced code blocks. Vertical padding follows the host.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Code block padding"
+              type="range"
+              min={CODE_BLOCK_PADDING.min}
+              max={CODE_BLOCK_PADDING.max}
+              step={1}
+              value={state.codeBlockPadding}
+              onChange={(event) => update({ codeBlockPadding: Number(event.currentTarget.value) })}
+            />
+            <output>{state.codeBlockPadding}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Code block margin</span>
+            <span className="msm-hint">Extra space above and below fenced code blocks.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Code block margin"
+              type="range"
+              min={CODE_BLOCK_MARGIN.min}
+              max={CODE_BLOCK_MARGIN.max}
+              step={1}
+              value={state.codeBlockMargin}
+              onChange={(event) => update({ codeBlockMargin: Number(event.currentTarget.value) })}
+            />
+            <output>{state.codeBlockMargin}px</output>
+          </div>
         </div>
       </section>
 
