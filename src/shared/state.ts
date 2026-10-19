@@ -5,7 +5,6 @@ export const INPUT_FONT_SIZE = { min: 12, max: 18, defaultValue: 14 } as const
 
 export type Gate = "viewport" | "device"
 export type NavMode = "rail" | "drawer" | "topbar"
-export type SidebarWidth = "full" | "86vw"
 export type PreviewScale = "fit" | number
 
 export interface PreviewSettings {
@@ -21,7 +20,8 @@ export interface SettingsV1 {
   breakpoint: number
   gate: Gate
   navMode: NavMode
-  sidebarWidth: SidebarWidth
+  navSize: number
+  drawerWidth: number
   settingsFullscreen: boolean
   compactHeader: boolean
   hideSubtitles: boolean
@@ -42,8 +42,13 @@ export interface SettingsV1 {
 
 const GATES: readonly Gate[] = ["viewport", "device"]
 const NAV_MODES: readonly NavMode[] = ["rail", "drawer", "topbar"]
-const SIDEBAR_WIDTHS: readonly SidebarWidth[] = ["full", "86vw"]
 const DEVICE_IDS: readonly string[] = ["390x844", "375x667", "412x915", "768x1024"]
+
+export const NAV_SIZE_MIN = 40
+export const NAV_SIZE_MAX = 72
+export const NAV_SIZE_DEFAULT = 56
+export const DRAWER_WIDTH_MIN = 60
+export const DRAWER_WIDTH_MAX = 100
 
 export function createDefaultSettings(): SettingsV1 {
   return {
@@ -53,7 +58,8 @@ export function createDefaultSettings(): SettingsV1 {
     breakpoint: 768,
     gate: "viewport",
     navMode: "rail",
-    sidebarWidth: "full",
+    navSize: NAV_SIZE_DEFAULT,
+    drawerWidth: DRAWER_WIDTH_MAX,
     settingsFullscreen: true,
     compactHeader: false,
     hideSubtitles: false,
@@ -95,6 +101,23 @@ function readEnum<T extends string>(value: unknown, allowed: readonly T[], fallb
   return typeof value === "string" && (allowed as readonly string[]).includes(value) ? value as T : fallback
 }
 
+function clampRound(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, Math.round(value)))
+}
+
+function readNavSize(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) return NAV_SIZE_DEFAULT
+  return clampRound(value, NAV_SIZE_MIN, NAV_SIZE_MAX)
+}
+
+function readDrawerWidth(value: unknown, legacySidebarWidth: unknown): number {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return clampRound(value, DRAWER_WIDTH_MIN, DRAWER_WIDTH_MAX)
+  }
+  // States written before the width slider stored the drawer width as "full" | "86vw".
+  return legacySidebarWidth === "86vw" ? 86 : DRAWER_WIDTH_MAX
+}
+
 function readBreakpoint(value: unknown): number {
   if (typeof value !== "number" || !Number.isFinite(value)) return 768
   return Math.min(1024, Math.max(480, Math.round(value)))
@@ -130,7 +153,8 @@ export function normalizeState(value: unknown): SettingsV1 {
     breakpoint: readBreakpoint(value.breakpoint),
     gate: readEnum(value.gate, GATES, defaults.gate),
     navMode: readEnum(value.navMode, NAV_MODES, defaults.navMode),
-    sidebarWidth: readEnum(value.sidebarWidth, SIDEBAR_WIDTHS, defaults.sidebarWidth),
+    navSize: readNavSize(value.navSize),
+    drawerWidth: readDrawerWidth(value.drawerWidth, value.sidebarWidth),
     settingsFullscreen: readBoolean(value.settingsFullscreen, defaults.settingsFullscreen),
     compactHeader: readBoolean(value.compactHeader, defaults.compactHeader),
     hideSubtitles: readBoolean(value.hideSubtitles, defaults.hideSubtitles),

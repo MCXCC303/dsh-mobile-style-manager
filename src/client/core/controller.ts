@@ -96,7 +96,6 @@ export function createController(ctx: ClientContext): Controller {
     const state = store.get()
     const next = buildNavState(state, media, coarse, topbarSlotAvailable, drawerAvailable)
     setValue(ATTRS.nav, next.active ? next.effective : null)
-    setValue(ATTRS.sidebar, next.active ? state.sidebarWidth : null)
     if (!sameNav(navState, next)) {
       navState = next
       notifyNav()
@@ -153,7 +152,6 @@ export function createController(ctx: ClientContext): Controller {
     media.removeEventListener("change", onMediaChange)
     coarse.removeEventListener("change", onMediaChange)
     setValue(ATTRS.nav, null)
-    setValue(ATTRS.sidebar, null)
     navListeners.clear()
     sidebarListeners.clear()
     styleLayer.dispose()

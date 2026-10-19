@@ -1,6 +1,6 @@
 import { ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery } from "../../shared/identity"
 import { gateQuery, scanCss } from "../../shared/css"
-import { INPUT_FONT_SIZE, INPUT_RADIUS, type SettingsV1 } from "../../shared/state"
+import { DRAWER_WIDTH_MAX, INPUT_FONT_SIZE, INPUT_RADIUS, type SettingsV1 } from "../../shared/state"
 import { buildSkin, settingsDialogCss, settingsUiCss } from "../skin"
 import type { Store } from "./store"
 
@@ -22,7 +22,10 @@ const ROOT_ATTRS = [
   ATTRS.hideComposerMeta,
   ATTRS.safeArea,
   ATTRS.settingsFullscreen,
+  ATTRS.drawerScrim,
 ] as const
+
+const ROOT_VARS = ["--msm-nav-size", "--msm-sidebar-width"] as const
 
 /** Matches every viewport. */
 const ALWAYS = "all"
@@ -41,6 +44,11 @@ function createStyle(id: string, css: string, media: string): HTMLStyleElement {
 function setFlag(root: HTMLElement, name: string, on: boolean): void {
   if (on) root.setAttribute(name, "")
   else root.removeAttribute(name)
+}
+
+function setVar(root: HTMLElement, name: string, value: string | null): void {
+  if (value === null) root.style.removeProperty(name)
+  else root.style.setProperty(name, value)
 }
 
 function setMedia(style: HTMLStyleElement, media: string): void {
@@ -81,6 +89,9 @@ export function createStyleLayer(store: Store): StyleLayer {
     root.style.setProperty("--msm-input-radius", state.inputRadius + "px")
     root.style.setProperty("--msm-input-font-size", state.inputFontSize + "px")
     setFlag(root, ATTRS.settingsFullscreen, media.matches && state.settingsFullscreen)
+    setFlag(root, ATTRS.drawerScrim, state.enabled && mobile && state.drawerWidth < DRAWER_WIDTH_MAX)
+    setVar(root, "--msm-nav-size", state.enabled && mobile ? state.navSize + "px" : null)
+    setVar(root, "--msm-sidebar-width", state.enabled && mobile ? state.drawerWidth + "%" : null)
   }
 
   const render = (state: SettingsV1): void => {
@@ -126,6 +137,7 @@ export function createStyleLayer(store: Store): StyleLayer {
       for (const name of ROOT_ATTRS) root.removeAttribute(name)
       root.style.removeProperty("--msm-input-radius")
       root.style.removeProperty("--msm-input-font-size")
+      for (const name of ROOT_VARS) root.style.removeProperty(name)
       skin.remove()
       settings.remove()
       dialog.remove()
