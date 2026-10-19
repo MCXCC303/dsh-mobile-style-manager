@@ -171,6 +171,25 @@ html[data-dsh-msm][data-dsh-msm-nav="drawer"] header[class*="_header"]:not([clas
   padding-left: 60px !important;
 }
 
+/* compact.css's 40px tab row centers the labels and its 36px title row adds to the gap
+   above them; restore the host title row and top-align the labels in a 30px hit area. */
+html[data-dsh-msm][data-dsh-msm-compact-header] header[class*="_header"] [class*="_titleRow"] {
+  min-height: 28px !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-compact-header] header[class*="_header"] [class*="_tabs"] {
+  height: 30px !important;
+  padding: 0 8px !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-compact-header] header[class*="_header"] button[class*="_tab"] {
+  display: flex !important;
+  align-items: flex-start !important;
+  height: 30px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 .msm-menu-anchor {
   display: inline-flex;
   align-items: center;
