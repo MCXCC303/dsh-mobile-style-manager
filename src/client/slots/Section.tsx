@@ -359,6 +359,35 @@ export function Section({ controller }: SectionProps): ReactElement {
         </div>
       </section>
 
+      <section className="msm-card" aria-labelledby="msm-text-title">
+        <h3 className="msm-card-title" id="msm-text-title">Text</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Override body font size</span>
+            <span className="msm-hint">Scale message text and its line spacing instead of the host setting.</span>
+          </div>
+          <Switch label="Override body font size" checked={state.overrideBodyFont} onChange={(value) => update({ overrideBodyFont: value })} />
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Body font size</span>
+            <span className="msm-hint">Message text size, 10 to 20 pixels.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Body font size"
+              type="range"
+              min={10}
+              max={20}
+              step={1}
+              value={state.bodyFontSize}
+              disabled={!state.overrideBodyFont}
+              onChange={(event) => update({ bodyFontSize: Number(event.currentTarget.value) })}
+            />
+            <output>{state.bodyFontSize}px</output>
+          </div>
+        </div>
+      </section>
       <section className="msm-card" aria-labelledby="msm-compat-title">
         <h3 className="msm-card-title" id="msm-compat-title">Compatibility</h3>
         <div className="msm-kv">

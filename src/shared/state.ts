@@ -33,6 +33,8 @@ export interface SettingsV1 {
   inputRadius: number
   inputFontSize: number
   hideComposerMeta: boolean
+  bodyFontSize: number
+  overrideBodyFont: boolean
   safeArea: boolean
   customCss: string
   rawCss: boolean
@@ -71,6 +73,8 @@ export function createDefaultSettings(): SettingsV1 {
     inputRadius: INPUT_RADIUS.defaultValue,
     inputFontSize: INPUT_FONT_SIZE.defaultValue,
     hideComposerMeta: false,
+    bodyFontSize: 14,
+    overrideBodyFont: false,
     safeArea: true,
     customCss: "",
     rawCss: false,
@@ -128,6 +132,11 @@ function readClamped(value: unknown, fallback: number, min: number, max: number)
   return Math.min(max, Math.max(min, Math.round(value)))
 }
 
+function readFontSize(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) return 14
+  return Math.min(20, Math.max(10, Math.round(value)))
+}
+
 function readPreview(value: unknown, fallback: PreviewSettings): PreviewSettings {
   if (!isRecord(value)) return { ...fallback }
   const scale: PreviewScale = value.scale === "fit"
@@ -166,6 +175,8 @@ export function normalizeState(value: unknown): SettingsV1 {
     inputRadius: readClamped(value.inputRadius, defaults.inputRadius, INPUT_RADIUS.min, INPUT_RADIUS.max),
     inputFontSize: readClamped(value.inputFontSize, defaults.inputFontSize, INPUT_FONT_SIZE.min, INPUT_FONT_SIZE.max),
     hideComposerMeta: readBoolean(value.hideComposerMeta, defaults.hideComposerMeta),
+    bodyFontSize: readFontSize(value.bodyFontSize),
+    overrideBodyFont: readBoolean(value.overrideBodyFont, defaults.overrideBodyFont),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),
     customCss: readString(value.customCss, defaults.customCss),
     rawCss: readBoolean(value.rawCss, defaults.rawCss),
