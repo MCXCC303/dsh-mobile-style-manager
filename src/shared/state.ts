@@ -2,6 +2,10 @@ export const SETTINGS_VERSION = 1
 
 export const INPUT_RADIUS = { min: 8, max: 32, defaultValue: 28 } as const
 export const INPUT_FONT_SIZE = { min: 12, max: 18, defaultValue: 14 } as const
+export const MESSAGE_RADIUS = { min: 8, max: 28, defaultValue: 20 } as const
+export const MESSAGE_PAD_X = { min: 8, max: 24, defaultValue: 16 } as const
+export const MESSAGE_PAD_Y = { min: 4, max: 20, defaultValue: 10 } as const
+export const MESSAGE_MARGIN = { min: 0, max: 24, defaultValue: 0 } as const
 
 export type Gate = "viewport" | "device"
 export type NavMode = "rail" | "drawer" | "topbar"
@@ -33,6 +37,10 @@ export interface SettingsV1 {
   inputRadius: number
   inputFontSize: number
   hideComposerMeta: boolean
+  messageRadius: number
+  messagePadX: number
+  messagePadY: number
+  messageMargin: number
   bodyFontSize: number
   overrideBodyFont: boolean
   safeArea: boolean
@@ -73,6 +81,10 @@ export function createDefaultSettings(): SettingsV1 {
     inputRadius: INPUT_RADIUS.defaultValue,
     inputFontSize: INPUT_FONT_SIZE.defaultValue,
     hideComposerMeta: false,
+    messageRadius: MESSAGE_RADIUS.defaultValue,
+    messagePadX: MESSAGE_PAD_X.defaultValue,
+    messagePadY: MESSAGE_PAD_Y.defaultValue,
+    messageMargin: MESSAGE_MARGIN.defaultValue,
     bodyFontSize: 14,
     overrideBodyFont: false,
     safeArea: true,
@@ -175,6 +187,10 @@ export function normalizeState(value: unknown): SettingsV1 {
     inputRadius: readClamped(value.inputRadius, defaults.inputRadius, INPUT_RADIUS.min, INPUT_RADIUS.max),
     inputFontSize: readClamped(value.inputFontSize, defaults.inputFontSize, INPUT_FONT_SIZE.min, INPUT_FONT_SIZE.max),
     hideComposerMeta: readBoolean(value.hideComposerMeta, defaults.hideComposerMeta),
+    messageRadius: readClamped(value.messageRadius, defaults.messageRadius, MESSAGE_RADIUS.min, MESSAGE_RADIUS.max),
+    messagePadX: readClamped(value.messagePadX, defaults.messagePadX, MESSAGE_PAD_X.min, MESSAGE_PAD_X.max),
+    messagePadY: readClamped(value.messagePadY, defaults.messagePadY, MESSAGE_PAD_Y.min, MESSAGE_PAD_Y.max),
+    messageMargin: readClamped(value.messageMargin, defaults.messageMargin, MESSAGE_MARGIN.min, MESSAGE_MARGIN.max),
     bodyFontSize: readFontSize(value.bodyFontSize),
     overrideBodyFont: readBoolean(value.overrideBodyFont, defaults.overrideBodyFont),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),

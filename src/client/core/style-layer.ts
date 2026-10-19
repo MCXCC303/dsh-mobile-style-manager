@@ -1,6 +1,6 @@
 import { ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery } from "../../shared/identity"
 import { gateQuery, scanCss } from "../../shared/css"
-import { DRAWER_WIDTH_MAX, INPUT_FONT_SIZE, INPUT_RADIUS, type SettingsV1 } from "../../shared/state"
+import { DRAWER_WIDTH_MAX, INPUT_FONT_SIZE, INPUT_RADIUS, MESSAGE_MARGIN, MESSAGE_PAD_X, MESSAGE_PAD_Y, MESSAGE_RADIUS, type SettingsV1 } from "../../shared/state"
 import { buildSkin, settingsDialogCss, settingsUiCss } from "../skin"
 import type { Store } from "./store"
 
@@ -20,6 +20,10 @@ const ROOT_ATTRS = [
   ATTRS.inputRadius,
   ATTRS.inputFontSize,
   ATTRS.hideComposerMeta,
+  ATTRS.messageRadius,
+  ATTRS.messagePadX,
+  ATTRS.messagePadY,
+  ATTRS.messageMargin,
   ATTRS.safeArea,
   ATTRS.settingsFullscreen,
   ATTRS.drawerScrim,
@@ -86,9 +90,17 @@ export function createStyleLayer(store: Store): StyleLayer {
     setFlag(root, ATTRS.inputRadius, state.enabled && mobile && state.inputRadius !== INPUT_RADIUS.defaultValue)
     setFlag(root, ATTRS.inputFontSize, state.enabled && mobile && state.inputFontSize !== INPUT_FONT_SIZE.defaultValue)
     setFlag(root, ATTRS.hideComposerMeta, state.enabled && mobile && state.hideComposerMeta)
+    setFlag(root, ATTRS.messageRadius, state.enabled && mobile && state.messageRadius !== MESSAGE_RADIUS.defaultValue)
+    setFlag(root, ATTRS.messagePadX, state.enabled && mobile && state.messagePadX !== MESSAGE_PAD_X.defaultValue)
+    setFlag(root, ATTRS.messagePadY, state.enabled && mobile && state.messagePadY !== MESSAGE_PAD_Y.defaultValue)
+    setFlag(root, ATTRS.messageMargin, state.enabled && mobile && state.messageMargin !== MESSAGE_MARGIN.defaultValue)
     setFlag(root, ATTRS.safeArea, state.enabled && mobile && state.safeArea)
     root.style.setProperty("--msm-input-radius", state.inputRadius + "px")
     root.style.setProperty("--msm-input-font-size", state.inputFontSize + "px")
+    root.style.setProperty("--msm-message-radius", state.messageRadius + "px")
+    root.style.setProperty("--msm-message-pad-x", state.messagePadX + "px")
+    root.style.setProperty("--msm-message-pad-y", state.messagePadY + "px")
+    root.style.setProperty("--msm-message-margin", state.messageMargin + "px")
     setFlag(root, ATTRS.settingsFullscreen, media.matches && state.settingsFullscreen)
     setFlag(root, ATTRS.drawerScrim, state.enabled && mobile && state.drawerWidth < DRAWER_WIDTH_MAX)
     setVar(root, "--msm-nav-size", state.enabled && mobile ? state.navSize + "px" : null)
@@ -146,6 +158,10 @@ export function createStyleLayer(store: Store): StyleLayer {
       for (const name of ROOT_ATTRS) root.removeAttribute(name)
       root.style.removeProperty("--msm-input-radius")
       root.style.removeProperty("--msm-input-font-size")
+      root.style.removeProperty("--msm-message-radius")
+      root.style.removeProperty("--msm-message-pad-x")
+      root.style.removeProperty("--msm-message-pad-y")
+      root.style.removeProperty("--msm-message-margin")
       for (const name of ROOT_VARS) root.style.removeProperty(name)
       skin.remove()
       settings.remove()

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from "react"
 import { ATTRS } from "../../shared/identity"
-import { DRAWER_WIDTH_MAX, DRAWER_WIDTH_MIN, INPUT_FONT_SIZE, INPUT_RADIUS, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
+import { DRAWER_WIDTH_MAX, DRAWER_WIDTH_MIN, INPUT_FONT_SIZE, INPUT_RADIUS, MESSAGE_MARGIN, MESSAGE_PAD_X, MESSAGE_PAD_Y, MESSAGE_RADIUS, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
 import type { Controller } from "../core/controller"
 import type { HealthReport } from "../core/health"
 
@@ -345,6 +345,82 @@ export function Section({ controller }: SectionProps): ReactElement {
             <span className="msm-hint">Hide the turn, token, and context statistics below the composer.</span>
           </div>
           <Switch label="Hide composer meta" checked={state.hideComposerMeta} onChange={(value) => update({ hideComposerMeta: value })} />
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-area-message-title">
+        <h3 className="msm-card-title" id="msm-area-message-title">Area: message</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Message radius</span>
+            <span className="msm-hint">Round the user message bubble.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Message radius"
+              type="range"
+              min={MESSAGE_RADIUS.min}
+              max={MESSAGE_RADIUS.max}
+              step={1}
+              value={state.messageRadius}
+              onChange={(event) => update({ messageRadius: Number(event.currentTarget.value) })}
+            />
+            <output>{state.messageRadius}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Message padding X</span>
+            <span className="msm-hint">Horizontal padding inside the user message bubble.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Message padding X"
+              type="range"
+              min={MESSAGE_PAD_X.min}
+              max={MESSAGE_PAD_X.max}
+              step={1}
+              value={state.messagePadX}
+              onChange={(event) => update({ messagePadX: Number(event.currentTarget.value) })}
+            />
+            <output>{state.messagePadX}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Message padding Y</span>
+            <span className="msm-hint">Vertical padding inside the user message bubble.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Message padding Y"
+              type="range"
+              min={MESSAGE_PAD_Y.min}
+              max={MESSAGE_PAD_Y.max}
+              step={1}
+              value={state.messagePadY}
+              onChange={(event) => update({ messagePadY: Number(event.currentTarget.value) })}
+            />
+            <output>{state.messagePadY}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Message margin</span>
+            <span className="msm-hint">Vertical margin around each user message row.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Message margin"
+              type="range"
+              min={MESSAGE_MARGIN.min}
+              max={MESSAGE_MARGIN.max}
+              step={1}
+              value={state.messageMargin}
+              onChange={(event) => update({ messageMargin: Number(event.currentTarget.value) })}
+            />
+            <output>{state.messageMargin}px</output>
+          </div>
         </div>
       </section>
 
