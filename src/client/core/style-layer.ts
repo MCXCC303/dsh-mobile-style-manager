@@ -103,8 +103,9 @@ export function createStyleLayer(store: Store): StyleLayer {
       if (state.overrideBodyFont) {
         rules.push("body { --dsh-content-font-size: " + state.bodyFontSize + "px !important }")
       }
+      // Margins collapse against the host's 16px margin-top, so both sides must be owned.
       rules.push(
-        'html[data-dsh-msm] [class*="_markdown"] :is(p, ul, ol, blockquote) { margin-bottom: calc(1em * '
+        'html[data-dsh-msm] [class*="_markdown"] :is(p, ul, ol, blockquote) { margin-top: 0 !important; margin-bottom: calc(1em * '
           + state.paragraphSpacing + ") !important }",
       )
       rules.push(
