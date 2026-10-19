@@ -387,6 +387,42 @@ export function Section({ controller }: SectionProps): ReactElement {
             <output>{state.bodyFontSize}px</output>
           </div>
         </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Line height scale</span>
+            <span className="msm-hint">Multiplies the host line height of message text.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Line height scale"
+              type="range"
+              min={0.8}
+              max={1.6}
+              step={0.05}
+              value={state.lineHeightScale}
+              onChange={(event) => update({ lineHeightScale: Number(event.currentTarget.value) })}
+            />
+            <output>{state.lineHeightScale.toFixed(2)}x</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Paragraph spacing</span>
+            <span className="msm-hint">Gap after a paragraph, in multiples of the font size.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Paragraph spacing"
+              type="range"
+              min={0.4}
+              max={2}
+              step={0.05}
+              value={state.paragraphSpacing}
+              onChange={(event) => update({ paragraphSpacing: Number(event.currentTarget.value) })}
+            />
+            <output>{state.paragraphSpacing.toFixed(2)}em</output>
+          </div>
+        </div>
       </section>
       <section className="msm-card" aria-labelledby="msm-compat-title">
         <h3 className="msm-card-title" id="msm-compat-title">Compatibility</h3>

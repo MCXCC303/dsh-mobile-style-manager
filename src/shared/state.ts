@@ -35,6 +35,8 @@ export interface SettingsV1 {
   hideComposerMeta: boolean
   bodyFontSize: number
   overrideBodyFont: boolean
+  lineHeightScale: number
+  paragraphSpacing: number
   safeArea: boolean
   customCss: string
   rawCss: boolean
@@ -75,6 +77,8 @@ export function createDefaultSettings(): SettingsV1 {
     hideComposerMeta: false,
     bodyFontSize: 14,
     overrideBodyFont: false,
+    lineHeightScale: 1,
+    paragraphSpacing: 0.9,
     safeArea: true,
     customCss: "",
     rawCss: false,
@@ -103,6 +107,11 @@ function readString(value: unknown, fallback: string): string {
 
 function readEnum<T extends string>(value: unknown, allowed: readonly T[], fallback: T): T {
   return typeof value === "string" && (allowed as readonly string[]).includes(value) ? value as T : fallback
+}
+
+function readFloat(value: unknown, fallback: number, min: number, max: number): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) return fallback
+  return Math.round(Math.min(max, Math.max(min, value)) * 100) / 100
 }
 
 function clampRound(value: number, min: number, max: number): number {
@@ -177,6 +186,8 @@ export function normalizeState(value: unknown): SettingsV1 {
     hideComposerMeta: readBoolean(value.hideComposerMeta, defaults.hideComposerMeta),
     bodyFontSize: readFontSize(value.bodyFontSize),
     overrideBodyFont: readBoolean(value.overrideBodyFont, defaults.overrideBodyFont),
+    lineHeightScale: readFloat(value.lineHeightScale, defaults.lineHeightScale, 0.8, 1.6),
+    paragraphSpacing: readFloat(value.paragraphSpacing, defaults.paragraphSpacing, 0.4, 2),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),
     customCss: readString(value.customCss, defaults.customCss),
     rawCss: readBoolean(value.rawCss, defaults.rawCss),

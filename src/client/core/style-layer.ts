@@ -95,15 +95,29 @@ export function createStyleLayer(store: Store): StyleLayer {
     setVar(root, "--msm-sidebar-width", state.enabled && mobile ? state.drawerWidth + "%" : null)
   }
 
-  // An !important declaration in a style sheet outranks the host's inline value on body.
-  const syncBodyFont = (state: SettingsV1): void => {
-    const active = state.enabled && isMobile(state) && state.overrideBodyFont
-    const rule = active ? "body { --dsh-content-font-size: " + state.bodyFontSize + "px !important }" : ""
-    if (font.textContent !== rule) font.textContent = rule
+  // A style sheet outranks the host's inline value on body, and keeps the host's ratios when
+  // the spacing scales are left at their defaults.
+  const syncTypography = (state: SettingsV1): void => {
+    const rules: string[] = []
+    if (state.enabled && isMobile(state)) {
+      if (state.overrideBodyFont) {
+        rules.push("body { --dsh-content-font-size: " + state.bodyFontSize + "px !important }")
+      }
+      rules.push(
+        'html[data-dsh-msm] [class*="_markdown"] :is(p, ul, ol, blockquote) { margin-bottom: calc(1em * '
+          + state.paragraphSpacing + ") !important }",
+      )
+      rules.push(
+        'html[data-dsh-msm] [class*="_markdown"] :is(p, li) { line-height: calc((1em + 10px) * '
+          + state.lineHeightScale + ") !important }",
+      )
+    }
+    const css = rules.join("\n")
+    if (font.textContent !== css) font.textContent = css
   }
   const render = (state: SettingsV1): void => {
     syncRoot(state)
-    syncBodyFont(state)
+    syncTypography(state)
     setMedia(skin, state.enabled && state.useBuiltinSkin
       ? gateQuery(state.breakpoint, state.gate)
       : NEVER)
