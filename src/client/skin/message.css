@@ -1,0 +1,18 @@
+html[data-dsh-msm][data-dsh-msm-message-radius] [class*="_userRow"] [class*="_bubble"] {
+  border-radius: var(--msm-message-radius) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-message-pad-x] [class*="_userRow"] [class*="_bubble"] {
+  padding-left: var(--msm-message-pad-x) !important;
+  padding-right: var(--msm-message-pad-x) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-message-pad-y] [class*="_userRow"] [class*="_bubble"] {
+  padding-top: var(--msm-message-pad-y) !important;
+  padding-bottom: var(--msm-message-pad-y) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-message-margin] [class*="_userRow"] {
+  margin-top: var(--msm-message-margin) !important;
+  margin-bottom: var(--msm-message-margin) !important;
+}
