@@ -31,6 +31,7 @@ export const ATTRS = {
   inlineCodeRadius: "data-dsh-msm-inline-code-radius",
   inlineCodePaddingX: "data-dsh-msm-inline-code-pad-x",
   inlineCodePaddingY: "data-dsh-msm-inline-code-pad-y",
+  inlineCodeLineHeight: "data-dsh-msm-inline-code-line-height",
   safeArea: "data-dsh-msm-safe-area",
   settingsFullscreen: "data-dsh-msm-settings-fullscreen",
   section: "data-dsh-msm-section",

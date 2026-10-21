@@ -54,7 +54,12 @@ html[data-dsh-msm][data-dsh-msm-code-margin] [class*="_markdown"][class*="_compa
   margin-bottom: var(--msm-code-block-margin) !important;
 }
 
-/* Inline code renders as a bare code element outside the fenced block. */
+/* Inline code renders as a bare code element outside the fenced block. Its background paints
+   the whole line box, so the leading around the glyphs is controlled by the line height. */
+html[data-dsh-msm][data-dsh-msm-inline-code-line-height] [class*="_markdown"] :not(pre) > code {
+  line-height: var(--msm-inline-code-line-height) !important;
+}
+
 html[data-dsh-msm][data-dsh-msm-inline-code-radius] [class*="_markdown"] :not(pre) > code {
   border-radius: var(--msm-inline-code-radius) !important;
 }

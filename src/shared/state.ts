@@ -13,6 +13,7 @@ export const CODE_BLOCK_PADDING_BOTTOM = { min: 0, max: 24, defaultValue: 20 } a
 export const INLINE_CODE_RADIUS = { min: 0, max: 16, defaultValue: 8 } as const
 export const INLINE_CODE_PADDING_X = { min: 0, max: 12, defaultValue: 5 } as const
 export const INLINE_CODE_PADDING_Y = { min: 0, max: 8, defaultValue: 0 } as const
+export const INLINE_CODE_LINE_HEIGHT = { min: 1, max: 2, defaultValue: 1.55 } as const
 
 export type Gate = "viewport" | "device"
 export type NavMode = "rail" | "drawer" | "topbar"
@@ -52,6 +53,7 @@ export interface SettingsV1 {
   inlineCodeRadius: number
   inlineCodePaddingX: number
   inlineCodePaddingY: number
+  inlineCodeLineHeight: number
   bodyFontSize: number
   overrideBodyFont: boolean
   safeArea: boolean
@@ -100,6 +102,7 @@ export function createDefaultSettings(): SettingsV1 {
     inlineCodeRadius: INLINE_CODE_RADIUS.defaultValue,
     inlineCodePaddingX: INLINE_CODE_PADDING_X.defaultValue,
     inlineCodePaddingY: INLINE_CODE_PADDING_Y.defaultValue,
+    inlineCodeLineHeight: INLINE_CODE_LINE_HEIGHT.defaultValue,
     bodyFontSize: 14,
     overrideBodyFont: false,
     safeArea: true,
@@ -210,6 +213,7 @@ export function normalizeState(value: unknown): SettingsV1 {
     inlineCodeRadius: readClamped(value.inlineCodeRadius, defaults.inlineCodeRadius, INLINE_CODE_RADIUS.min, INLINE_CODE_RADIUS.max),
     inlineCodePaddingX: readClamped(value.inlineCodePaddingX, defaults.inlineCodePaddingX, INLINE_CODE_PADDING_X.min, INLINE_CODE_PADDING_X.max),
     inlineCodePaddingY: readClamped(value.inlineCodePaddingY, defaults.inlineCodePaddingY, INLINE_CODE_PADDING_Y.min, INLINE_CODE_PADDING_Y.max),
+    inlineCodeLineHeight: readClamped(value.inlineCodeLineHeight, defaults.inlineCodeLineHeight, INLINE_CODE_LINE_HEIGHT.min, INLINE_CODE_LINE_HEIGHT.max),
     bodyFontSize: readFontSize(value.bodyFontSize),
     overrideBodyFont: readBoolean(value.overrideBodyFont, defaults.overrideBodyFont),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),

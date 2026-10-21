@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from "react"
 import { ATTRS } from "../../shared/identity"
-import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_PADDING_BOTTOM, CODE_BLOCK_PADDING_TOP, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, INLINE_CODE_PADDING_X, INLINE_CODE_PADDING_Y, INLINE_CODE_RADIUS, DRAWER_WIDTH_MIN, INPUT_FONT_SIZE, INPUT_RADIUS, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
+import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_PADDING_BOTTOM, CODE_BLOCK_PADDING_TOP, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, INLINE_CODE_LINE_HEIGHT, INLINE_CODE_PADDING_X, INLINE_CODE_PADDING_Y, INLINE_CODE_RADIUS, DRAWER_WIDTH_MIN, INPUT_FONT_SIZE, INPUT_RADIUS, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
 import type { Controller } from "../core/controller"
 import type { HealthReport } from "../core/health"
 
@@ -496,6 +496,24 @@ export function Section({ controller }: SectionProps): ReactElement {
               onChange={(event) => update({ inlineCodePaddingY: Number(event.currentTarget.value) })}
             />
             <output>{state.inlineCodePaddingY}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Inline code line height</span>
+            <span className="msm-hint">Tightens the blank space around the text of an inline code span.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Inline code line height"
+              type="range"
+              min={INLINE_CODE_LINE_HEIGHT.min}
+              max={INLINE_CODE_LINE_HEIGHT.max}
+              step={0.05}
+              value={state.inlineCodeLineHeight}
+              onChange={(event) => update({ inlineCodeLineHeight: Number(event.currentTarget.value) })}
+            />
+            <output>{state.inlineCodeLineHeight.toFixed(2)}</output>
           </div>
         </div>
       </section>
