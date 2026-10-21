@@ -1,7 +1,7 @@
 import { ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery } from "../../shared/identity"
 import { gateQuery, scanCss } from "../../shared/css"
 import { DRAWER_WIDTH_MAX, INPUT_FONT_SIZE, INPUT_RADIUS, type SettingsV1 } from "../../shared/state"
-import { buildSkin, settingsDialogCss, settingsUiCss } from "../skin"
+import { buildSkin, rhythmCss, settingsDialogCss, settingsUiCss } from "../skin"
 import type { Store } from "./store"
 
 export interface StyleLayer {
@@ -25,7 +25,7 @@ const ROOT_ATTRS = [
   ATTRS.drawerScrim,
 ] as const
 
-const ROOT_VARS = ["--msm-nav-size", "--msm-sidebar-width"] as const
+const ROOT_VARS = ["--msm-nav-size", "--msm-sidebar-width", "--msm-line-height-scale", "--msm-paragraph-spacing"] as const
 
 /** Matches every viewport. */
 const ALWAYS = "all"
@@ -89,6 +89,8 @@ export function createStyleLayer(store: Store): StyleLayer {
     setFlag(root, ATTRS.safeArea, state.enabled && mobile && state.safeArea)
     root.style.setProperty("--msm-input-radius", state.inputRadius + "px")
     root.style.setProperty("--msm-input-font-size", state.inputFontSize + "px")
+    root.style.setProperty("--msm-line-height-scale", String(state.lineHeightScale))
+    root.style.setProperty("--msm-paragraph-spacing", String(state.paragraphSpacing))
     setFlag(root, ATTRS.settingsFullscreen, media.matches && state.settingsFullscreen)
     setFlag(root, ATTRS.drawerScrim, state.enabled && mobile && state.drawerWidth < DRAWER_WIDTH_MAX)
     setVar(root, "--msm-nav-size", state.enabled && mobile ? state.navSize + "px" : null)
@@ -103,15 +105,7 @@ export function createStyleLayer(store: Store): StyleLayer {
       if (state.overrideBodyFont) {
         rules.push("body { --dsh-content-font-size: " + state.bodyFontSize + "px !important }")
       }
-      // Margins collapse against the host's 16px margin-top, so both sides must be owned.
-      rules.push(
-        'html[data-dsh-msm] [class*="_markdown"] :is(p, ul, ol, blockquote) { margin-top: 0 !important; margin-bottom: calc(1em * '
-          + state.paragraphSpacing + ") !important }",
-      )
-      rules.push(
-        'html[data-dsh-msm] [class*="_markdown"] :is(p, li) { line-height: calc((1em + 10px) * '
-          + state.lineHeightScale + ") !important }",
-      )
+      rules.push(rhythmCss)
     }
     const css = rules.join("\n")
     if (font.textContent !== css) font.textContent = css

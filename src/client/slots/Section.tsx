@@ -390,7 +390,7 @@ export function Section({ controller }: SectionProps): ReactElement {
         <div className="msm-row">
           <div className="msm-copy">
             <span className="msm-label">Line height scale</span>
-            <span className="msm-hint">Multiplies the host line height of message text.</span>
+            <span className="msm-hint">Multiplies the host line height of message text, headings and list items.</span>
           </div>
           <div className="msm-range">
             <input
@@ -408,7 +408,7 @@ export function Section({ controller }: SectionProps): ReactElement {
         <div className="msm-row">
           <div className="msm-copy">
             <span className="msm-label">Paragraph spacing</span>
-            <span className="msm-hint">Gap after a paragraph, in multiples of the font size.</span>
+            <span className="msm-hint">Gap after a paragraph, heading or list, in multiples of the font size.</span>
           </div>
           <div className="msm-range">
             <input
