@@ -1,26 +1,8 @@
-import {ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery} from "../../shared/identity"
-import {gateQuery, scanCss} from "../../shared/css"
-import {
-  CODE_BLOCK_MARGIN,
-  CODE_BLOCK_PADDING,
-  CODE_BLOCK_PADDING_BOTTOM,
-  CODE_BLOCK_PADDING_TOP,
-  CODE_BLOCK_RADIUS,
-  INLINE_CODE_LINE_HEIGHT,
-  INLINE_CODE_PADDING_X,
-  INLINE_CODE_PADDING_Y,
-  INLINE_CODE_RADIUS,
-  DRAWER_WIDTH_MAX,
-  INPUT_FONT_SIZE,
-  INPUT_RADIUS,
-  MESSAGE_MARGIN,
-  MESSAGE_PAD_X,
-  MESSAGE_PAD_Y,
-  MESSAGE_RADIUS,
-  type SettingsV1
-} from "../../shared/state"
-import {buildSkin, settingsDialogCss, settingsUiCss} from "../skin"
-import type {Store} from "./store"
+import { ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery } from "../../shared/identity"
+import { gateQuery, scanCss } from "../../shared/css"
+import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_PADDING_BOTTOM, CODE_BLOCK_PADDING_TOP, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, INLINE_CODE_LINE_HEIGHT, INLINE_CODE_PADDING_X, INLINE_CODE_PADDING_Y, INLINE_CODE_RADIUS, INPUT_FONT_SIZE, INPUT_RADIUS, MESSAGE_MARGIN, MESSAGE_PAD_X, MESSAGE_PAD_Y, MESSAGE_RADIUS, type SettingsV1 } from "../../shared/state"
+import { buildSkin, settingsDialogCss, settingsUiCss } from "../skin"
+import type { Store } from "./store"
 
 export interface StyleLayer {
   dispose(): void
@@ -131,7 +113,6 @@ export function createStyleLayer(store: Store): StyleLayer {
     setFlag(root, ATTRS.messagePadX, state.enabled && mobile && state.messagePadX !== MESSAGE_PAD_X.defaultValue)
     setFlag(root, ATTRS.messagePadY, state.enabled && mobile && state.messagePadY !== MESSAGE_PAD_Y.defaultValue)
     setFlag(root, ATTRS.messageMargin, state.enabled && mobile && state.messageMargin !== MESSAGE_MARGIN.defaultValue)
-    setFlag(root, ATTRS.safeArea, state.enabled && mobile && state.safeArea)
     root.style.setProperty("--msm-input-radius", state.inputRadius + "px")
     root.style.setProperty("--msm-input-font-size", state.inputFontSize + "px")
     root.style.setProperty("--msm-code-block-radius", state.codeBlockRadius + "px")
@@ -143,8 +124,6 @@ export function createStyleLayer(store: Store): StyleLayer {
     root.style.setProperty("--msm-inline-code-padding-x", state.inlineCodePaddingX + "px")
     root.style.setProperty("--msm-inline-code-padding-y", state.inlineCodePaddingY + "px")
     root.style.setProperty("--msm-inline-code-line-height", String(state.inlineCodeLineHeight))
-    root.style.setProperty("--msm-input-radius", state.inputRadius + "px")
-    root.style.setProperty("--msm-input-font-size", state.inputFontSize + "px")
     root.style.setProperty("--msm-message-radius", state.messageRadius + "px")
     root.style.setProperty("--msm-message-pad-x", state.messagePadX + "px")
     root.style.setProperty("--msm-message-pad-y", state.messagePadY + "px")

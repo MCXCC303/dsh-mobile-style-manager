@@ -1,23 +1,23 @@
 export const SETTINGS_VERSION = 1
 
-export const INPUT_RADIUS = {min: 8, max: 32, defaultValue: 28} as const
-export const INPUT_FONT_SIZE = {min: 12, max: 18, defaultValue: 14} as const
-export const MESSAGE_RADIUS = {min: 8, max: 28, defaultValue: 20} as const
-export const MESSAGE_PAD_X = {min: 8, max: 24, defaultValue: 16} as const
-export const MESSAGE_PAD_Y = {min: 4, max: 20, defaultValue: 10} as const
-export const MESSAGE_MARGIN = {min: 0, max: 24, defaultValue: 0} as const
+export const INPUT_RADIUS = { min: 8, max: 32, defaultValue: 28 } as const
+export const INPUT_FONT_SIZE = { min: 12, max: 18, defaultValue: 14 } as const
+export const MESSAGE_RADIUS = { min: 8, max: 28, defaultValue: 20 } as const
+export const MESSAGE_PAD_X = { min: 8, max: 24, defaultValue: 16 } as const
+export const MESSAGE_PAD_Y = { min: 4, max: 20, defaultValue: 10 } as const
+export const MESSAGE_MARGIN = { min: 0, max: 24, defaultValue: 0 } as const
 
 // Radius and padding mirror the host's fenced code block. Margin is additive,
 // so its default of 0 keeps the host spacing instead of replacing it.
-export const CODE_BLOCK_RADIUS = {min: 0, max: 24, defaultValue: 16} as const
-export const CODE_BLOCK_PADDING = {min: 0, max: 24, defaultValue: 22} as const
-export const CODE_BLOCK_MARGIN = {min: 0, max: 24, defaultValue: 0} as const
-export const CODE_BLOCK_PADDING_TOP = {min: 0, max: 24, defaultValue: 6} as const
-export const CODE_BLOCK_PADDING_BOTTOM = {min: 0, max: 24, defaultValue: 20} as const
-export const INLINE_CODE_RADIUS = {min: 0, max: 16, defaultValue: 8} as const
-export const INLINE_CODE_PADDING_X = {min: 0, max: 12, defaultValue: 5} as const
-export const INLINE_CODE_PADDING_Y = {min: 0, max: 8, defaultValue: 0} as const
-export const INLINE_CODE_LINE_HEIGHT = {min: 1, max: 2, defaultValue: 1.55} as const
+export const CODE_BLOCK_RADIUS = { min: 0, max: 24, defaultValue: 16 } as const
+export const CODE_BLOCK_PADDING = { min: 0, max: 24, defaultValue: 22 } as const
+export const CODE_BLOCK_MARGIN = { min: 0, max: 24, defaultValue: 0 } as const
+export const CODE_BLOCK_PADDING_TOP = { min: 0, max: 24, defaultValue: 6 } as const
+export const CODE_BLOCK_PADDING_BOTTOM = { min: 0, max: 24, defaultValue: 20 } as const
+export const INLINE_CODE_RADIUS = { min: 0, max: 16, defaultValue: 8 } as const
+export const INLINE_CODE_PADDING_X = { min: 0, max: 12, defaultValue: 5 } as const
+export const INLINE_CODE_PADDING_Y = { min: 0, max: 8, defaultValue: 0 } as const
+export const INLINE_CODE_LINE_HEIGHT = { min: 1, max: 2, defaultValue: 1.55 } as const
 
 export type Gate = "viewport" | "device"
 export type NavMode = "rail" | "drawer" | "topbar"
@@ -180,7 +180,7 @@ function readFontSize(value: unknown): number {
 }
 
 function readPreview(value: unknown, fallback: PreviewSettings): PreviewSettings {
-  if (!isRecord(value)) return {...fallback}
+  if (!isRecord(value)) return { ...fallback }
   const scale: PreviewScale = value.scale === "fit"
     ? "fit"
     : typeof value.scale === "number" && Number.isFinite(value.scale)

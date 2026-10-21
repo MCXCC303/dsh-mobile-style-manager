@@ -1,29 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from "react"
 import { ATTRS } from "../../shared/identity"
-import {
-  CODE_BLOCK_MARGIN,
-  CODE_BLOCK_PADDING,
-  CODE_BLOCK_PADDING_BOTTOM,
-  CODE_BLOCK_PADDING_TOP,
-  CODE_BLOCK_RADIUS,
-  INLINE_CODE_LINE_HEIGHT,
-  INLINE_CODE_PADDING_X,
-  INLINE_CODE_PADDING_Y,
-  INLINE_CODE_RADIUS,
-  DRAWER_WIDTH_MAX,
-  DRAWER_WIDTH_MIN,
-  INPUT_FONT_SIZE,
-  INPUT_RADIUS,
-  MESSAGE_MARGIN,
-  MESSAGE_PAD_X,
-  MESSAGE_PAD_Y,
-  MESSAGE_RADIUS,
-  NAV_SIZE_MAX,
-  NAV_SIZE_MIN,
-  type Gate,
-  type NavMode,
-  type SettingsV1
-} from "../../shared/state"
+import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_PADDING_BOTTOM, CODE_BLOCK_PADDING_TOP, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, DRAWER_WIDTH_MIN, INLINE_CODE_LINE_HEIGHT, INLINE_CODE_PADDING_X, INLINE_CODE_PADDING_Y, INLINE_CODE_RADIUS, INPUT_FONT_SIZE, INPUT_RADIUS, MESSAGE_MARGIN, MESSAGE_PAD_X, MESSAGE_PAD_Y, MESSAGE_RADIUS, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
 import type { Controller } from "../core/controller"
 import type { HealthReport } from "../core/health"
 
@@ -391,27 +368,6 @@ export function Section({ controller }: SectionProps): ReactElement {
             <output>{state.codeBlockRadius}px</output>
           </div>
         </div>
-      </section>
-      <section className="msm-card" aria-labelledby="msm-area-message-title">
-        <h3 className="msm-card-title" id="msm-area-message-title">Area: message</h3>
-        <div className="msm-row">
-          <div className="msm-copy">
-            <span className="msm-label">Message radius</span>
-            <span className="msm-hint">Round the user message bubble.</span>
-          </div>
-          <div className="msm-range">
-            <input
-              aria-label="Message radius"
-              type="range"
-              min={MESSAGE_RADIUS.min}
-              max={MESSAGE_RADIUS.max}
-              step={1}
-              value={state.messageRadius}
-              onChange={(event) => update({ messageRadius: Number(event.currentTarget.value) })}
-            />
-            <output>{state.messageRadius}px</output>
-          </div>
-        </div>
         <div className="msm-row">
           <div className="msm-copy">
             <span className="msm-label">Code block padding</span>
@@ -428,20 +384,6 @@ export function Section({ controller }: SectionProps): ReactElement {
               onChange={(event) => update({ codeBlockPadding: Number(event.currentTarget.value) })}
             />
             <output>{state.codeBlockPadding}px</output>
-            <span className="msm-label">Message padding X</span>
-            <span className="msm-hint">Horizontal padding inside the user message bubble.</span>
-          </div>
-          <div className="msm-range">
-            <input
-              aria-label="Message padding X"
-              type="range"
-              min={MESSAGE_PAD_X.min}
-              max={MESSAGE_PAD_X.max}
-              step={1}
-              value={state.messagePadX}
-              onChange={(event) => update({ messagePadX: Number(event.currentTarget.value) })}
-            />
-            <output>{state.messagePadX}px</output>
           </div>
         </div>
         <div className="msm-row">
@@ -460,20 +402,6 @@ export function Section({ controller }: SectionProps): ReactElement {
               onChange={(event) => update({ codeBlockPaddingTop: Number(event.currentTarget.value) })}
             />
             <output>{state.codeBlockPaddingTop}px</output>
-            <span className="msm-label">Message padding Y</span>
-            <span className="msm-hint">Vertical padding inside the user message bubble.</span>
-          </div>
-          <div className="msm-range">
-            <input
-              aria-label="Message padding Y"
-              type="range"
-              min={MESSAGE_PAD_Y.min}
-              max={MESSAGE_PAD_Y.max}
-              step={1}
-              value={state.messagePadY}
-              onChange={(event) => update({ messagePadY: Number(event.currentTarget.value) })}
-            />
-            <output>{state.messagePadY}px</output>
           </div>
         </div>
         <div className="msm-row">
@@ -510,6 +438,82 @@ export function Section({ controller }: SectionProps): ReactElement {
               onChange={(event) => update({ codeBlockMargin: Number(event.currentTarget.value) })}
             />
             <output>{state.codeBlockMargin}px</output>
+          </div>
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-area-message-title">
+        <h3 className="msm-card-title" id="msm-area-message-title">Area: message</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Message radius</span>
+            <span className="msm-hint">Round the user message bubble.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Message radius"
+              type="range"
+              min={MESSAGE_RADIUS.min}
+              max={MESSAGE_RADIUS.max}
+              step={1}
+              value={state.messageRadius}
+              onChange={(event) => update({ messageRadius: Number(event.currentTarget.value) })}
+            />
+            <output>{state.messageRadius}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Message padding X</span>
+            <span className="msm-hint">Horizontal padding inside the user message bubble.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Message padding X"
+              type="range"
+              min={MESSAGE_PAD_X.min}
+              max={MESSAGE_PAD_X.max}
+              step={1}
+              value={state.messagePadX}
+              onChange={(event) => update({ messagePadX: Number(event.currentTarget.value) })}
+            />
+            <output>{state.messagePadX}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Message padding Y</span>
+            <span className="msm-hint">Vertical padding inside the user message bubble.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Message padding Y"
+              type="range"
+              min={MESSAGE_PAD_Y.min}
+              max={MESSAGE_PAD_Y.max}
+              step={1}
+              value={state.messagePadY}
+              onChange={(event) => update({ messagePadY: Number(event.currentTarget.value) })}
+            />
+            <output>{state.messagePadY}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Message margin</span>
+            <span className="msm-hint">Vertical margin around each user message row.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Message margin"
+              type="range"
+              min={MESSAGE_MARGIN.min}
+              max={MESSAGE_MARGIN.max}
+              step={1}
+              value={state.messageMargin}
+              onChange={(event) => update({ messageMargin: Number(event.currentTarget.value) })}
+            />
+            <output>{state.messageMargin}px</output>
           </div>
         </div>
       </section>
@@ -586,20 +590,6 @@ export function Section({ controller }: SectionProps): ReactElement {
               onChange={(event) => update({ inlineCodeLineHeight: Number(event.currentTarget.value) })}
             />
             <output>{state.inlineCodeLineHeight.toFixed(2)}</output>
-            <span className="msm-label">Message margin</span>
-            <span className="msm-hint">Vertical margin around each user message row.</span>
-          </div>
-          <div className="msm-range">
-            <input
-              aria-label="Message margin"
-              type="range"
-              min={MESSAGE_MARGIN.min}
-              max={MESSAGE_MARGIN.max}
-              step={1}
-              value={state.messageMargin}
-              onChange={(event) => update({ messageMargin: Number(event.currentTarget.value) })}
-            />
-            <output>{state.messageMargin}px</output>
           </div>
         </div>
       </section>

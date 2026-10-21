@@ -12,4 +12,4 @@ export function buildSkin(): string {
   return [baseSkin, compactSkin, navigationSkin, hostTextCss, inputCss, messageCss, codeCss].join("\n")
 }
 
-export {settingsDialogCss, settingsUiCss}
+export { settingsDialogCss, settingsUiCss }
