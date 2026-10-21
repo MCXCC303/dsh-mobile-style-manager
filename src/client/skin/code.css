@@ -3,10 +3,20 @@ html[data-dsh-msm][data-dsh-msm-code-radius] .md-code-block {
   --dsl-code-block-border-radius: var(--msm-code-block-radius);
 }
 
-/* Message fences use the host card layout and carry data-code-wrap. */
-html[data-dsh-msm][data-dsh-msm-code-padding] .md-code-block[data-code-wrap] [data-code-block-content] pre {
+/* Message fences use the host card layout and carry data-code-wrap; the banner and the code
+   body share the horizontal inset so both edges stay aligned. */
+html[data-dsh-msm][data-dsh-msm-code-padding] .md-code-block[data-code-wrap] [data-code-block-content] pre,
+html[data-dsh-msm][data-dsh-msm-code-padding] .md-code-block[data-code-wrap] [data-code-block-banner] {
   padding-left: var(--msm-code-block-padding) !important;
   padding-right: var(--msm-code-block-padding) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-code-padding-top] .md-code-block[data-code-wrap] [data-code-block-content] pre {
+  padding-top: var(--msm-code-block-padding-top) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-code-padding-bottom] .md-code-block[data-code-wrap] [data-code-block-content] pre {
+  padding-bottom: var(--msm-code-block-padding-bottom) !important;
 }
 
 /* Host margins: 16px/11px (4px in compact markdown), with 0 on root first and last children. */
@@ -42,4 +52,19 @@ html[data-dsh-msm][data-dsh-msm-code-margin] [class*="_markdown"][class*="_compa
 
 html[data-dsh-msm][data-dsh-msm-code-margin] [class*="_markdown"][class*="_compact"] > .md-code-block:last-child {
   margin-bottom: var(--msm-code-block-margin) !important;
+}
+
+/* Inline code renders as a bare code element outside the fenced block. */
+html[data-dsh-msm][data-dsh-msm-inline-code-radius] [class*="_markdown"] :not(pre) > code {
+  border-radius: var(--msm-inline-code-radius) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-inline-code-pad-x] [class*="_markdown"] :not(pre) > code {
+  padding-left: var(--msm-inline-code-padding-x) !important;
+  padding-right: var(--msm-inline-code-padding-x) !important;
+}
+
+html[data-dsh-msm][data-dsh-msm-inline-code-pad-y] [class*="_markdown"] :not(pre) > code {
+  padding-top: var(--msm-inline-code-padding-y) !important;
+  padding-bottom: var(--msm-inline-code-padding-y) !important;
 }

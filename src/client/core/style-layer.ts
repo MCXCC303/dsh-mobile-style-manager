@@ -1,6 +1,6 @@
 import { ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery } from "../../shared/identity"
 import { gateQuery, scanCss } from "../../shared/css"
-import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, INPUT_FONT_SIZE, INPUT_RADIUS, type SettingsV1 } from "../../shared/state"
+import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_PADDING_BOTTOM, CODE_BLOCK_PADDING_TOP, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, INLINE_CODE_PADDING_X, INLINE_CODE_PADDING_Y, INLINE_CODE_RADIUS, INPUT_FONT_SIZE, INPUT_RADIUS, type SettingsV1 } from "../../shared/state"
 import { buildSkin, settingsDialogCss, settingsUiCss } from "../skin"
 import type { Store } from "./store"
 
@@ -23,6 +23,11 @@ const ROOT_ATTRS = [
   ATTRS.codeBlockRadius,
   ATTRS.codeBlockPadding,
   ATTRS.codeBlockMargin,
+  ATTRS.codeBlockPaddingTop,
+  ATTRS.codeBlockPaddingBottom,
+  ATTRS.inlineCodeRadius,
+  ATTRS.inlineCodePaddingX,
+  ATTRS.inlineCodePaddingY,
   ATTRS.safeArea,
   ATTRS.settingsFullscreen,
   ATTRS.drawerScrim,
@@ -92,12 +97,22 @@ export function createStyleLayer(store: Store): StyleLayer {
     setFlag(root, ATTRS.codeBlockRadius, state.enabled && mobile && state.codeBlockRadius !== CODE_BLOCK_RADIUS.defaultValue)
     setFlag(root, ATTRS.codeBlockPadding, state.enabled && mobile && state.codeBlockPadding !== CODE_BLOCK_PADDING.defaultValue)
     setFlag(root, ATTRS.codeBlockMargin, state.enabled && mobile && state.codeBlockMargin !== CODE_BLOCK_MARGIN.defaultValue)
+    setFlag(root, ATTRS.codeBlockPaddingTop, state.enabled && mobile && state.codeBlockPaddingTop !== CODE_BLOCK_PADDING_TOP.defaultValue)
+    setFlag(root, ATTRS.codeBlockPaddingBottom, state.enabled && mobile && state.codeBlockPaddingBottom !== CODE_BLOCK_PADDING_BOTTOM.defaultValue)
+    setFlag(root, ATTRS.inlineCodeRadius, state.enabled && mobile && state.inlineCodeRadius !== INLINE_CODE_RADIUS.defaultValue)
+    setFlag(root, ATTRS.inlineCodePaddingX, state.enabled && mobile && state.inlineCodePaddingX !== INLINE_CODE_PADDING_X.defaultValue)
+    setFlag(root, ATTRS.inlineCodePaddingY, state.enabled && mobile && state.inlineCodePaddingY !== INLINE_CODE_PADDING_Y.defaultValue)
     setFlag(root, ATTRS.safeArea, state.enabled && mobile && state.safeArea)
     root.style.setProperty("--msm-input-radius", state.inputRadius + "px")
     root.style.setProperty("--msm-input-font-size", state.inputFontSize + "px")
     root.style.setProperty("--msm-code-block-radius", state.codeBlockRadius + "px")
     root.style.setProperty("--msm-code-block-padding", state.codeBlockPadding + "px")
     root.style.setProperty("--msm-code-block-margin", state.codeBlockMargin + "px")
+    root.style.setProperty("--msm-code-block-padding-top", state.codeBlockPaddingTop + "px")
+    root.style.setProperty("--msm-code-block-padding-bottom", state.codeBlockPaddingBottom + "px")
+    root.style.setProperty("--msm-inline-code-radius", state.inlineCodeRadius + "px")
+    root.style.setProperty("--msm-inline-code-padding-x", state.inlineCodePaddingX + "px")
+    root.style.setProperty("--msm-inline-code-padding-y", state.inlineCodePaddingY + "px")
     setFlag(root, ATTRS.settingsFullscreen, media.matches && state.settingsFullscreen)
     setFlag(root, ATTRS.drawerScrim, state.enabled && mobile && state.drawerWidth < DRAWER_WIDTH_MAX)
     setVar(root, "--msm-nav-size", state.enabled && mobile ? state.navSize + "px" : null)
@@ -158,6 +173,11 @@ export function createStyleLayer(store: Store): StyleLayer {
       root.style.removeProperty("--msm-code-block-radius")
       root.style.removeProperty("--msm-code-block-padding")
       root.style.removeProperty("--msm-code-block-margin")
+      root.style.removeProperty("--msm-code-block-padding-top")
+      root.style.removeProperty("--msm-code-block-padding-bottom")
+      root.style.removeProperty("--msm-inline-code-radius")
+      root.style.removeProperty("--msm-inline-code-padding-x")
+      root.style.removeProperty("--msm-inline-code-padding-y")
       for (const name of ROOT_VARS) root.style.removeProperty(name)
       skin.remove()
       settings.remove()

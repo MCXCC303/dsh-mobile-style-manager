@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from "react"
 import { ATTRS } from "../../shared/identity"
-import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, DRAWER_WIDTH_MIN, INPUT_FONT_SIZE, INPUT_RADIUS, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
+import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_PADDING_BOTTOM, CODE_BLOCK_PADDING_TOP, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, INLINE_CODE_PADDING_X, INLINE_CODE_PADDING_Y, INLINE_CODE_RADIUS, DRAWER_WIDTH_MIN, INPUT_FONT_SIZE, INPUT_RADIUS, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
 import type { Controller } from "../core/controller"
 import type { HealthReport } from "../core/health"
 
@@ -371,7 +371,7 @@ export function Section({ controller }: SectionProps): ReactElement {
         <div className="msm-row">
           <div className="msm-copy">
             <span className="msm-label">Code block padding</span>
-            <span className="msm-hint">Horizontal inset of fenced code blocks. Vertical padding follows the host.</span>
+            <span className="msm-hint">Horizontal inset of the code body and its header.</span>
           </div>
           <div className="msm-range">
             <input
@@ -384,6 +384,42 @@ export function Section({ controller }: SectionProps): ReactElement {
               onChange={(event) => update({ codeBlockPadding: Number(event.currentTarget.value) })}
             />
             <output>{state.codeBlockPadding}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Code block padding top</span>
+            <span className="msm-hint">Space between the header and the first code line.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Code block padding top"
+              type="range"
+              min={CODE_BLOCK_PADDING_TOP.min}
+              max={CODE_BLOCK_PADDING_TOP.max}
+              step={1}
+              value={state.codeBlockPaddingTop}
+              onChange={(event) => update({ codeBlockPaddingTop: Number(event.currentTarget.value) })}
+            />
+            <output>{state.codeBlockPaddingTop}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Code block padding bottom</span>
+            <span className="msm-hint">Space below the last code line.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Code block padding bottom"
+              type="range"
+              min={CODE_BLOCK_PADDING_BOTTOM.min}
+              max={CODE_BLOCK_PADDING_BOTTOM.max}
+              step={1}
+              value={state.codeBlockPaddingBottom}
+              onChange={(event) => update({ codeBlockPaddingBottom: Number(event.currentTarget.value) })}
+            />
+            <output>{state.codeBlockPaddingBottom}px</output>
           </div>
         </div>
         <div className="msm-row">
@@ -402,6 +438,64 @@ export function Section({ controller }: SectionProps): ReactElement {
               onChange={(event) => update({ codeBlockMargin: Number(event.currentTarget.value) })}
             />
             <output>{state.codeBlockMargin}px</output>
+          </div>
+        </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-area-inline-code-title">
+        <h3 className="msm-card-title" id="msm-area-inline-code-title">Area: inline code</h3>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Inline code radius</span>
+            <span className="msm-hint">Round corners of inline code spans.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Inline code radius"
+              type="range"
+              min={INLINE_CODE_RADIUS.min}
+              max={INLINE_CODE_RADIUS.max}
+              step={1}
+              value={state.inlineCodeRadius}
+              onChange={(event) => update({ inlineCodeRadius: Number(event.currentTarget.value) })}
+            />
+            <output>{state.inlineCodeRadius}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Inline code padding X</span>
+            <span className="msm-hint">Space on both sides of an inline code span.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Inline code padding X"
+              type="range"
+              min={INLINE_CODE_PADDING_X.min}
+              max={INLINE_CODE_PADDING_X.max}
+              step={1}
+              value={state.inlineCodePaddingX}
+              onChange={(event) => update({ inlineCodePaddingX: Number(event.currentTarget.value) })}
+            />
+            <output>{state.inlineCodePaddingX}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Inline code padding Y</span>
+            <span className="msm-hint">Space above and below an inline code span.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Inline code padding Y"
+              type="range"
+              min={INLINE_CODE_PADDING_Y.min}
+              max={INLINE_CODE_PADDING_Y.max}
+              step={1}
+              value={state.inlineCodePaddingY}
+              onChange={(event) => update({ inlineCodePaddingY: Number(event.currentTarget.value) })}
+            />
+            <output>{state.inlineCodePaddingY}px</output>
           </div>
         </div>
       </section>

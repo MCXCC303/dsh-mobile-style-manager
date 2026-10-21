@@ -8,6 +8,11 @@ export const INPUT_FONT_SIZE = { min: 12, max: 18, defaultValue: 14 } as const
 export const CODE_BLOCK_RADIUS = { min: 0, max: 24, defaultValue: 16 } as const
 export const CODE_BLOCK_PADDING = { min: 0, max: 24, defaultValue: 22 } as const
 export const CODE_BLOCK_MARGIN = { min: 0, max: 24, defaultValue: 0 } as const
+export const CODE_BLOCK_PADDING_TOP = { min: 0, max: 24, defaultValue: 6 } as const
+export const CODE_BLOCK_PADDING_BOTTOM = { min: 0, max: 24, defaultValue: 20 } as const
+export const INLINE_CODE_RADIUS = { min: 0, max: 16, defaultValue: 8 } as const
+export const INLINE_CODE_PADDING_X = { min: 0, max: 12, defaultValue: 5 } as const
+export const INLINE_CODE_PADDING_Y = { min: 0, max: 8, defaultValue: 0 } as const
 
 export type Gate = "viewport" | "device"
 export type NavMode = "rail" | "drawer" | "topbar"
@@ -42,6 +47,11 @@ export interface SettingsV1 {
   codeBlockRadius: number
   codeBlockPadding: number
   codeBlockMargin: number
+  codeBlockPaddingTop: number
+  codeBlockPaddingBottom: number
+  inlineCodeRadius: number
+  inlineCodePaddingX: number
+  inlineCodePaddingY: number
   bodyFontSize: number
   overrideBodyFont: boolean
   safeArea: boolean
@@ -85,6 +95,11 @@ export function createDefaultSettings(): SettingsV1 {
     codeBlockRadius: CODE_BLOCK_RADIUS.defaultValue,
     codeBlockPadding: CODE_BLOCK_PADDING.defaultValue,
     codeBlockMargin: CODE_BLOCK_MARGIN.defaultValue,
+    codeBlockPaddingTop: CODE_BLOCK_PADDING_TOP.defaultValue,
+    codeBlockPaddingBottom: CODE_BLOCK_PADDING_BOTTOM.defaultValue,
+    inlineCodeRadius: INLINE_CODE_RADIUS.defaultValue,
+    inlineCodePaddingX: INLINE_CODE_PADDING_X.defaultValue,
+    inlineCodePaddingY: INLINE_CODE_PADDING_Y.defaultValue,
     bodyFontSize: 14,
     overrideBodyFont: false,
     safeArea: true,
@@ -190,6 +205,11 @@ export function normalizeState(value: unknown): SettingsV1 {
     codeBlockRadius: readClamped(value.codeBlockRadius, defaults.codeBlockRadius, CODE_BLOCK_RADIUS.min, CODE_BLOCK_RADIUS.max),
     codeBlockPadding: readClamped(value.codeBlockPadding, defaults.codeBlockPadding, CODE_BLOCK_PADDING.min, CODE_BLOCK_PADDING.max),
     codeBlockMargin: readClamped(value.codeBlockMargin, defaults.codeBlockMargin, CODE_BLOCK_MARGIN.min, CODE_BLOCK_MARGIN.max),
+    codeBlockPaddingTop: readClamped(value.codeBlockPaddingTop, defaults.codeBlockPaddingTop, CODE_BLOCK_PADDING_TOP.min, CODE_BLOCK_PADDING_TOP.max),
+    codeBlockPaddingBottom: readClamped(value.codeBlockPaddingBottom, defaults.codeBlockPaddingBottom, CODE_BLOCK_PADDING_BOTTOM.min, CODE_BLOCK_PADDING_BOTTOM.max),
+    inlineCodeRadius: readClamped(value.inlineCodeRadius, defaults.inlineCodeRadius, INLINE_CODE_RADIUS.min, INLINE_CODE_RADIUS.max),
+    inlineCodePaddingX: readClamped(value.inlineCodePaddingX, defaults.inlineCodePaddingX, INLINE_CODE_PADDING_X.min, INLINE_CODE_PADDING_X.max),
+    inlineCodePaddingY: readClamped(value.inlineCodePaddingY, defaults.inlineCodePaddingY, INLINE_CODE_PADDING_Y.min, INLINE_CODE_PADDING_Y.max),
     bodyFontSize: readFontSize(value.bodyFontSize),
     overrideBodyFont: readBoolean(value.overrideBodyFont, defaults.overrideBodyFont),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),
