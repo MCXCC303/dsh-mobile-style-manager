@@ -50,6 +50,17 @@ html[data-dsh-msm] [class*="_markdown"] li > :is(ul, ol) {
   margin-top: calc(4px * var(--msm-paragraph-spacing, 0.9)) !important;
 }
 
+/* A divider separates on both sides, and the host gives it twice the gap of a
+   block. Its top margin is left to the host when it opens a message or a list
+   item, where the host drops the top margin of the first child. */
+html[data-dsh-msm] [class*="_markdown"] hr {
+  margin-bottom: calc(2em * var(--msm-paragraph-spacing, 0.9)) !important;
+}
+
+html[data-dsh-msm] [class*="_markdown"] hr:not(:first-child) {
+  margin-top: calc(2em * var(--msm-paragraph-spacing, 0.9)) !important;
+}
+
 /* The host drops the bottom margin of a list item's last child, so the item does
    not carry a second gap below its own text. */
 html[data-dsh-msm] [class*="_markdown"] li > :last-child:not(.md-code-block) {
