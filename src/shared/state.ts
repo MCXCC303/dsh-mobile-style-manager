@@ -19,6 +19,14 @@ export const INLINE_CODE_PADDING_X = { min: 0, max: 12, defaultValue: 5 } as con
 export const INLINE_CODE_PADDING_Y = { min: 0, max: 8, defaultValue: 0 } as const
 export const INLINE_CODE_LINE_HEIGHT = { min: 1, max: 2, defaultValue: 1.55 } as const
 
+// Each spacing control owns one gap and starts at the host's own value, so the
+// plugin reproduces the host rhythm until the reader moves a control.
+export const BLOCK_SPACING = { min: 0, max: 32, defaultValue: 16 } as const
+export const HEADING_SPACING = { min: 0, max: 48, defaultValue: 16 } as const
+export const LIST_ITEM_SPACING = { min: 0, max: 24, defaultValue: 6 } as const
+export const NESTED_LIST_SPACING = { min: 0, max: 24, defaultValue: 4 } as const
+export const DIVIDER_SPACING = { min: 0, max: 64, defaultValue: 32 } as const
+
 export type Gate = "viewport" | "device"
 export type NavMode = "rail" | "drawer" | "topbar"
 export type PreviewScale = "fit" | number
@@ -64,6 +72,12 @@ export interface SettingsV1 {
   messageMargin: number
   bodyFontSize: number
   overrideBodyFont: boolean
+  lineHeightScale: number
+  blockSpacing: number
+  headingSpacing: number
+  listItemSpacing: number
+  nestedListSpacing: number
+  dividerSpacing: number
   safeArea: boolean
   customCss: string
   rawCss: boolean
@@ -117,6 +131,12 @@ export function createDefaultSettings(): SettingsV1 {
     messageMargin: MESSAGE_MARGIN.defaultValue,
     bodyFontSize: 14,
     overrideBodyFont: false,
+    lineHeightScale: 1,
+    blockSpacing: BLOCK_SPACING.defaultValue,
+    headingSpacing: HEADING_SPACING.defaultValue,
+    listItemSpacing: LIST_ITEM_SPACING.defaultValue,
+    nestedListSpacing: NESTED_LIST_SPACING.defaultValue,
+    dividerSpacing: DIVIDER_SPACING.defaultValue,
     safeArea: true,
     customCss: "",
     rawCss: false,
@@ -145,6 +165,11 @@ function readString(value: unknown, fallback: string): string {
 
 function readEnum<T extends string>(value: unknown, allowed: readonly T[], fallback: T): T {
   return typeof value === "string" && (allowed as readonly string[]).includes(value) ? value as T : fallback
+}
+
+function readFloat(value: unknown, fallback: number, min: number, max: number): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) return fallback
+  return Math.round(Math.min(max, Math.max(min, value)) * 100) / 100
 }
 
 function clampRound(value: number, min: number, max: number): number {
@@ -232,6 +257,12 @@ export function normalizeState(value: unknown): SettingsV1 {
     messageMargin: readClamped(value.messageMargin, defaults.messageMargin, MESSAGE_MARGIN.min, MESSAGE_MARGIN.max),
     bodyFontSize: readFontSize(value.bodyFontSize),
     overrideBodyFont: readBoolean(value.overrideBodyFont, defaults.overrideBodyFont),
+    lineHeightScale: readFloat(value.lineHeightScale, defaults.lineHeightScale, 0.8, 1.6),
+    blockSpacing: readClamped(value.blockSpacing, defaults.blockSpacing, BLOCK_SPACING.min, BLOCK_SPACING.max),
+    headingSpacing: readClamped(value.headingSpacing, defaults.headingSpacing, HEADING_SPACING.min, HEADING_SPACING.max),
+    listItemSpacing: readClamped(value.listItemSpacing, defaults.listItemSpacing, LIST_ITEM_SPACING.min, LIST_ITEM_SPACING.max),
+    nestedListSpacing: readClamped(value.nestedListSpacing, defaults.nestedListSpacing, NESTED_LIST_SPACING.min, NESTED_LIST_SPACING.max),
+    dividerSpacing: readClamped(value.dividerSpacing, defaults.dividerSpacing, DIVIDER_SPACING.min, DIVIDER_SPACING.max),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),
     customCss: readString(value.customCss, defaults.customCss),
     rawCss: readBoolean(value.rawCss, defaults.rawCss),

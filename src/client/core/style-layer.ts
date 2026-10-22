@@ -1,8 +1,26 @@
-import { ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery } from "../../shared/identity"
-import { gateQuery, scanCss } from "../../shared/css"
-import { CODE_BLOCK_MARGIN, CODE_BLOCK_PADDING, CODE_BLOCK_PADDING_BOTTOM, CODE_BLOCK_PADDING_TOP, CODE_BLOCK_RADIUS, DRAWER_WIDTH_MAX, INLINE_CODE_LINE_HEIGHT, INLINE_CODE_PADDING_X, INLINE_CODE_PADDING_Y, INLINE_CODE_RADIUS, INPUT_FONT_SIZE, INPUT_RADIUS, MESSAGE_MARGIN, MESSAGE_PAD_X, MESSAGE_PAD_Y, MESSAGE_RADIUS, type SettingsV1 } from "../../shared/state"
-import { buildSkin, settingsDialogCss, settingsUiCss } from "../skin"
-import type { Store } from "./store"
+import {ATTRS, PKG, STYLE_IDS, coarseQuery, mobileQuery} from "../../shared/identity"
+import {gateQuery, scanCss} from "../../shared/css"
+import {
+  CODE_BLOCK_MARGIN,
+  CODE_BLOCK_PADDING,
+  CODE_BLOCK_PADDING_BOTTOM,
+  CODE_BLOCK_PADDING_TOP,
+  CODE_BLOCK_RADIUS,
+  DRAWER_WIDTH_MAX,
+  INLINE_CODE_LINE_HEIGHT,
+  INLINE_CODE_PADDING_X,
+  INLINE_CODE_PADDING_Y,
+  INLINE_CODE_RADIUS,
+  INPUT_FONT_SIZE,
+  INPUT_RADIUS,
+  MESSAGE_MARGIN,
+  MESSAGE_PAD_X,
+  MESSAGE_PAD_Y,
+  MESSAGE_RADIUS,
+  type SettingsV1
+} from "../../shared/state"
+import {buildSkin, settingsDialogCss, settingsUiCss, rhythmCss} from "../skin"
+import type {Store} from "./store"
 
 export interface StyleLayer {
   dispose(): void
@@ -38,7 +56,16 @@ const ROOT_ATTRS = [
   ATTRS.drawerScrim,
 ] as const
 
-const ROOT_VARS = ["--msm-nav-size", "--msm-sidebar-width"] as const
+const ROOT_VARS = [
+  "--msm-nav-size",
+  "--msm-sidebar-width",
+  "--msm-line-height-scale",
+  "--msm-block-spacing",
+  "--msm-heading-spacing",
+  "--msm-list-item-spacing",
+  "--msm-nested-list-spacing",
+  "--msm-divider-spacing",
+] as const
 
 /** Matches every viewport. */
 const ALWAYS = "all"
@@ -128,21 +155,34 @@ export function createStyleLayer(store: Store): StyleLayer {
     root.style.setProperty("--msm-message-pad-x", state.messagePadX + "px")
     root.style.setProperty("--msm-message-pad-y", state.messagePadY + "px")
     root.style.setProperty("--msm-message-margin", state.messageMargin + "px")
+    root.style.setProperty("--msm-line-height-scale", String(state.lineHeightScale))
+    root.style.setProperty("--msm-block-spacing", state.blockSpacing + "px")
+    root.style.setProperty("--msm-heading-spacing", state.headingSpacing + "px")
+    root.style.setProperty("--msm-list-item-spacing", state.listItemSpacing + "px")
+    root.style.setProperty("--msm-nested-list-spacing", state.nestedListSpacing + "px")
+    root.style.setProperty("--msm-divider-spacing", state.dividerSpacing + "px")
     setFlag(root, ATTRS.settingsFullscreen, media.matches && state.settingsFullscreen)
     setFlag(root, ATTRS.drawerScrim, state.enabled && mobile && state.drawerWidth < DRAWER_WIDTH_MAX)
     setVar(root, "--msm-nav-size", state.enabled && mobile ? state.navSize + "px" : null)
     setVar(root, "--msm-sidebar-width", state.enabled && mobile ? state.drawerWidth + "%" : null)
   }
 
-  // An !important declaration in a style sheet outranks the host's inline value on body.
-  const syncBodyFont = (state: SettingsV1): void => {
-    const active = state.enabled && isMobile(state) && state.overrideBodyFont
-    const rule = active ? "body { --dsh-content-font-size: " + state.bodyFontSize + "px !important }" : ""
-    if (font.textContent !== rule) font.textContent = rule
+  // A style sheet outranks the host's inline value on body, and keeps the host's ratios when
+  // the spacing scales are left at their defaults.
+  const syncTypography = (state: SettingsV1): void => {
+    const rules: string[] = []
+    if (state.enabled && isMobile(state)) {
+      if (state.overrideBodyFont) {
+        rules.push("body { --dsh-content-font-size: " + state.bodyFontSize + "px !important }")
+      }
+      rules.push(rhythmCss)
+    }
+    const css = rules.join("\n")
+    if (font.textContent !== css) font.textContent = css
   }
   const render = (state: SettingsV1): void => {
     syncRoot(state)
-    syncBodyFont(state)
+    syncTypography(state)
     setMedia(skin, state.enabled && state.useBuiltinSkin
       ? gateQuery(state.breakpoint, state.gate)
       : NEVER)
