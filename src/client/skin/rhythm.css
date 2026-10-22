@@ -1,4 +1,4 @@
-/* Rhythm controls scale the host's own line boxes and block gaps.
+/* Rhythm controls scale the host's own line boxes and set each gap on its own.
    The host exposes a line-height token per heading, so the scale multiplies the
    real value instead of a guessed one and follows the host's font size. */
 html[data-dsh-msm] [class*="_markdown"] :is(p, li) {
@@ -32,42 +32,52 @@ html[data-dsh-msm] [class*="_markdown"] li::marker {
   line-height: inherit !important;
 }
 
-/* Block gaps: the host puts the same margin on both sides of a block and lets the
-   two collapse, so the spacing knob has to own the top margin as well. Headings
-   read their own font size, so a heading keeps the larger gap under it. */
-html[data-dsh-msm] [class*="_markdown"] :is(p, ul, ol, blockquote, h1, h2, h3, h4, h5, h6) {
+/* Block gaps: the host puts a margin on both sides of a block and lets the two
+   collapse, so a control owns the top margin as well and the gap under a block
+   never depends on the block above it. */
+html[data-dsh-msm] [class*="_markdown"] :is(p, ul, ol, blockquote) {
   margin-top: 0 !important;
-  margin-bottom: calc(1em * var(--msm-paragraph-spacing, 0.9)) !important;
+  margin-bottom: var(--msm-block-spacing, 16px) !important;
+}
+
+/* Headings keep the host's shape: h1 to h3 open with twice the space, h4 to h6
+   with the same space a block gets. */
+html[data-dsh-msm] [class*="_markdown"] :is(h1, h2, h3) {
+  margin-top: calc(var(--msm-heading-spacing, 16px) * 2) !important;
+  margin-bottom: var(--msm-heading-spacing, 16px) !important;
+}
+
+html[data-dsh-msm] [class*="_markdown"] :is(h4, h5, h6) {
+  margin-top: var(--msm-heading-spacing, 16px) !important;
+  margin-bottom: var(--msm-heading-spacing, 16px) !important;
 }
 
 /* The host keeps list items tighter than the gap between blocks. */
 html[data-dsh-msm] [class*="_markdown"] li:not(:first-child) {
-  margin-top: calc(6px * var(--msm-paragraph-spacing, 0.9)) !important;
+  margin-top: var(--msm-list-item-spacing, 6px) !important;
 }
 
 /* A nested list sits under the text of its parent item. */
 html[data-dsh-msm] [class*="_markdown"] li > :is(ul, ol) {
-  margin-top: calc(4px * var(--msm-paragraph-spacing, 0.9)) !important;
+  margin-top: var(--msm-nested-list-spacing, 4px) !important;
 }
 
-/* A divider separates on both sides, and the host gives it twice the gap of a
-   block. Its top margin is left to the host when it opens a message or a list
-   item, where the host drops the top margin of the first child. */
+/* A divider separates on both sides. */
 html[data-dsh-msm] [class*="_markdown"] hr {
-  margin-bottom: calc(2em * var(--msm-paragraph-spacing, 0.9)) !important;
+  margin-top: var(--msm-divider-spacing, 32px) !important;
+  margin-bottom: var(--msm-divider-spacing, 32px) !important;
 }
 
-html[data-dsh-msm] [class*="_markdown"] hr:not(:first-child) {
-  margin-top: calc(2em * var(--msm-paragraph-spacing, 0.9)) !important;
+/* The host drops the top margin of the first block of a message and of a list item. */
+html[data-dsh-msm] [class*="_markdown"] > :first-child,
+html[data-dsh-msm] [class*="_markdown"] li > :first-child {
+  margin-top: 0 !important;
 }
 
-/* The host drops the bottom margin of a list item's last child, so the item does
-   not carry a second gap below its own text. */
-html[data-dsh-msm] [class*="_markdown"] li > :last-child:not(.md-code-block) {
-  margin-bottom: 0 !important;
-}
-
-/* The host drops the bottom margin of the last block of a message. */
-html[data-dsh-msm] [class*="_markdown"] > :last-child {
+/* The host drops the bottom margin of the last block of a message, of a list
+   item, and of a paragraph. */
+html[data-dsh-msm] [class*="_markdown"] > :last-child,
+html[data-dsh-msm] [class*="_markdown"] li > :last-child:not(.md-code-block),
+html[data-dsh-msm] [class*="_markdown"] p:last-child {
   margin-bottom: 0 !important;
 }

@@ -3,6 +3,14 @@ export const SETTINGS_VERSION = 1
 export const INPUT_RADIUS = { min: 8, max: 32, defaultValue: 28 } as const
 export const INPUT_FONT_SIZE = { min: 12, max: 18, defaultValue: 14 } as const
 
+// Each spacing control owns one gap and starts at the host's own value, so the
+// plugin reproduces the host rhythm until the reader moves a control.
+export const BLOCK_SPACING = { min: 0, max: 32, defaultValue: 16 } as const
+export const HEADING_SPACING = { min: 0, max: 48, defaultValue: 16 } as const
+export const LIST_ITEM_SPACING = { min: 0, max: 24, defaultValue: 6 } as const
+export const NESTED_LIST_SPACING = { min: 0, max: 24, defaultValue: 4 } as const
+export const DIVIDER_SPACING = { min: 0, max: 64, defaultValue: 32 } as const
+
 export type Gate = "viewport" | "device"
 export type NavMode = "rail" | "drawer" | "topbar"
 export type PreviewScale = "fit" | number
@@ -36,7 +44,11 @@ export interface SettingsV1 {
   bodyFontSize: number
   overrideBodyFont: boolean
   lineHeightScale: number
-  paragraphSpacing: number
+  blockSpacing: number
+  headingSpacing: number
+  listItemSpacing: number
+  nestedListSpacing: number
+  dividerSpacing: number
   safeArea: boolean
   customCss: string
   rawCss: boolean
@@ -78,7 +90,11 @@ export function createDefaultSettings(): SettingsV1 {
     bodyFontSize: 14,
     overrideBodyFont: false,
     lineHeightScale: 1,
-    paragraphSpacing: 0.9,
+    blockSpacing: BLOCK_SPACING.defaultValue,
+    headingSpacing: HEADING_SPACING.defaultValue,
+    listItemSpacing: LIST_ITEM_SPACING.defaultValue,
+    nestedListSpacing: NESTED_LIST_SPACING.defaultValue,
+    dividerSpacing: DIVIDER_SPACING.defaultValue,
     safeArea: true,
     customCss: "",
     rawCss: false,
@@ -187,7 +203,11 @@ export function normalizeState(value: unknown): SettingsV1 {
     bodyFontSize: readFontSize(value.bodyFontSize),
     overrideBodyFont: readBoolean(value.overrideBodyFont, defaults.overrideBodyFont),
     lineHeightScale: readFloat(value.lineHeightScale, defaults.lineHeightScale, 0.8, 1.6),
-    paragraphSpacing: readFloat(value.paragraphSpacing, defaults.paragraphSpacing, 0.4, 2),
+    blockSpacing: readClamped(value.blockSpacing, defaults.blockSpacing, BLOCK_SPACING.min, BLOCK_SPACING.max),
+    headingSpacing: readClamped(value.headingSpacing, defaults.headingSpacing, HEADING_SPACING.min, HEADING_SPACING.max),
+    listItemSpacing: readClamped(value.listItemSpacing, defaults.listItemSpacing, LIST_ITEM_SPACING.min, LIST_ITEM_SPACING.max),
+    nestedListSpacing: readClamped(value.nestedListSpacing, defaults.nestedListSpacing, NESTED_LIST_SPACING.min, NESTED_LIST_SPACING.max),
+    dividerSpacing: readClamped(value.dividerSpacing, defaults.dividerSpacing, DIVIDER_SPACING.min, DIVIDER_SPACING.max),
     safeArea: readBoolean(value.safeArea, defaults.safeArea),
     customCss: readString(value.customCss, defaults.customCss),
     rawCss: readBoolean(value.rawCss, defaults.rawCss),

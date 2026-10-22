@@ -1,6 +1,21 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from "react"
 import { ATTRS } from "../../shared/identity"
-import { DRAWER_WIDTH_MAX, DRAWER_WIDTH_MIN, INPUT_FONT_SIZE, INPUT_RADIUS, NAV_SIZE_MAX, NAV_SIZE_MIN, type Gate, type NavMode, type SettingsV1 } from "../../shared/state"
+import {
+  BLOCK_SPACING,
+  DIVIDER_SPACING,
+  DRAWER_WIDTH_MAX,
+  DRAWER_WIDTH_MIN,
+  HEADING_SPACING,
+  INPUT_FONT_SIZE,
+  INPUT_RADIUS,
+  LIST_ITEM_SPACING,
+  NAV_SIZE_MAX,
+  NAV_SIZE_MIN,
+  NESTED_LIST_SPACING,
+  type Gate,
+  type NavMode,
+  type SettingsV1
+} from "../../shared/state"
 import type { Controller } from "../core/controller"
 import type { HealthReport } from "../core/health"
 
@@ -405,22 +420,98 @@ export function Section({ controller }: SectionProps): ReactElement {
             <output>{state.lineHeightScale.toFixed(2)}x</output>
           </div>
         </div>
+      </section>
+
+      <section className="msm-card" aria-labelledby="msm-spacing-title">
+        <h3 className="msm-card-title" id="msm-spacing-title">Spacing</h3>
         <div className="msm-row">
           <div className="msm-copy">
-            <span className="msm-label">Paragraph spacing</span>
-            <span className="msm-hint">Gap after a paragraph, heading or list, and around a divider.</span>
+            <span className="msm-label">Block spacing</span>
+            <span className="msm-hint">Gap under a paragraph, list or quote.</span>
           </div>
           <div className="msm-range">
             <input
-              aria-label="Paragraph spacing"
+              aria-label="Block spacing"
               type="range"
-              min={0.4}
-              max={2}
-              step={0.05}
-              value={state.paragraphSpacing}
-              onChange={(event) => update({ paragraphSpacing: Number(event.currentTarget.value) })}
+              min={BLOCK_SPACING.min}
+              max={BLOCK_SPACING.max}
+              step={1}
+              value={state.blockSpacing}
+              onChange={(event) => update({ blockSpacing: Number(event.currentTarget.value) })}
             />
-            <output>{state.paragraphSpacing.toFixed(2)}em</output>
+            <output>{state.blockSpacing}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Heading spacing</span>
+            <span className="msm-hint">Gap under a heading. A large heading keeps the host's wider space above.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Heading spacing"
+              type="range"
+              min={HEADING_SPACING.min}
+              max={HEADING_SPACING.max}
+              step={1}
+              value={state.headingSpacing}
+              onChange={(event) => update({ headingSpacing: Number(event.currentTarget.value) })}
+            />
+            <output>{state.headingSpacing}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">List item spacing</span>
+            <span className="msm-hint">Gap between the items of a list.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="List item spacing"
+              type="range"
+              min={LIST_ITEM_SPACING.min}
+              max={LIST_ITEM_SPACING.max}
+              step={1}
+              value={state.listItemSpacing}
+              onChange={(event) => update({ listItemSpacing: Number(event.currentTarget.value) })}
+            />
+            <output>{state.listItemSpacing}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Nested list spacing</span>
+            <span className="msm-hint">Gap between a list item and the list nested under it.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Nested list spacing"
+              type="range"
+              min={NESTED_LIST_SPACING.min}
+              max={NESTED_LIST_SPACING.max}
+              step={1}
+              value={state.nestedListSpacing}
+              onChange={(event) => update({ nestedListSpacing: Number(event.currentTarget.value) })}
+            />
+            <output>{state.nestedListSpacing}px</output>
+          </div>
+        </div>
+        <div className="msm-row">
+          <div className="msm-copy">
+            <span className="msm-label">Divider spacing</span>
+            <span className="msm-hint">Space above and below a divider line.</span>
+          </div>
+          <div className="msm-range">
+            <input
+              aria-label="Divider spacing"
+              type="range"
+              min={DIVIDER_SPACING.min}
+              max={DIVIDER_SPACING.max}
+              step={1}
+              value={state.dividerSpacing}
+              onChange={(event) => update({ dividerSpacing: Number(event.currentTarget.value) })}
+            />
+            <output>{state.dividerSpacing}px</output>
           </div>
         </div>
       </section>

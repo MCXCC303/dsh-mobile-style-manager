@@ -25,7 +25,16 @@ const ROOT_ATTRS = [
   ATTRS.drawerScrim,
 ] as const
 
-const ROOT_VARS = ["--msm-nav-size", "--msm-sidebar-width", "--msm-line-height-scale", "--msm-paragraph-spacing"] as const
+const ROOT_VARS = [
+  "--msm-nav-size",
+  "--msm-sidebar-width",
+  "--msm-line-height-scale",
+  "--msm-block-spacing",
+  "--msm-heading-spacing",
+  "--msm-list-item-spacing",
+  "--msm-nested-list-spacing",
+  "--msm-divider-spacing",
+] as const
 
 /** Matches every viewport. */
 const ALWAYS = "all"
@@ -90,7 +99,11 @@ export function createStyleLayer(store: Store): StyleLayer {
     root.style.setProperty("--msm-input-radius", state.inputRadius + "px")
     root.style.setProperty("--msm-input-font-size", state.inputFontSize + "px")
     root.style.setProperty("--msm-line-height-scale", String(state.lineHeightScale))
-    root.style.setProperty("--msm-paragraph-spacing", String(state.paragraphSpacing))
+    root.style.setProperty("--msm-block-spacing", state.blockSpacing + "px")
+    root.style.setProperty("--msm-heading-spacing", state.headingSpacing + "px")
+    root.style.setProperty("--msm-list-item-spacing", state.listItemSpacing + "px")
+    root.style.setProperty("--msm-nested-list-spacing", state.nestedListSpacing + "px")
+    root.style.setProperty("--msm-divider-spacing", state.dividerSpacing + "px")
     setFlag(root, ATTRS.settingsFullscreen, media.matches && state.settingsFullscreen)
     setFlag(root, ATTRS.drawerScrim, state.enabled && mobile && state.drawerWidth < DRAWER_WIDTH_MAX)
     setVar(root, "--msm-nav-size", state.enabled && mobile ? state.navSize + "px" : null)
